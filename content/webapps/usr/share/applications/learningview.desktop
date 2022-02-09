@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=LearningView - Online
+GenericName=LearningView
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/learningview.jpg
+Exec=/usr/share/bin/webapps https://learningview.org/app/
+Terminal=false
+Categories=Education

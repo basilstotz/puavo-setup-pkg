@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Millefeuilles Online
+GenericName=Millefeuilles
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/mfo.png
+Exec=/usr/share/bin/webapps  https://serv88919410.secure-node.at
+Terminal=false
+Categories=Education

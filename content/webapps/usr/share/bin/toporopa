@@ -1,0 +1,19 @@
+#!/bin/sh
+SHORT_LANG="$(echo $LANG | awk -F_ '{print $1}')"
+case "${SHORT_LANG}" in
+	de)
+		/usr/share/bin/webapps http://www.toporopa.eu/de/
+		;;
+	es)
+		/usr/share/bin/webapps http://www.toporopa.eu/es/
+		;;
+	fr)
+		/usr/share/bin/webapps http://www.toporopa.eu/fr/
+		;;
+	it)
+		/usr/share/bin/webapps http://www.toporopa.eu/it/
+		;;
+	*)
+		/usr/share/bin/webapps http://www.toporopa.eu/en/
+		;;
+esac

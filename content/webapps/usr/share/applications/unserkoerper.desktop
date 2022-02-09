@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Unser Körper
+GenericName= Unser Körper
+Comment="Mein Körper und Ich"
+Keywords="lp21 nmg z1 z2 körper biologie naturkunde"
+Icon=unserkoerper.png
+Exec=/usr/share/bin/webapps http://www.unserkoerper.de
+Terminal=false
+Categories=Education

@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Processing
+GenericName=Processing
+Comment="Processing"
+Keywords="lp21 nmg"
+Icon=processing.png
+Exec=/opt/processing/processing
+Terminal=false
+Categories=Development

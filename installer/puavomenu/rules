@@ -1,0 +1,42 @@
+#!/bin/sh
+
+set -eu
+
+
+
+command=$1
+shift
+
+
+pfad="/etc/puavomenu/menudata"
+
+case "${command}" in
+    configure)
+	upstream_dir=$1
+	
+        ln -fns "$upstream_dir/puavomenu/91-tab-main.json" $pfad/91-tab-main.json
+        ln -fns "$upstream_dir/puavomenu/91-tab-subjects.json" $pfad/91-tab-subjects.json
+
+	;;
+    
+    unconfigure)
+	upstream_dir="$1"
+	
+        rm -f $pfad/91-tab-main.json
+        rm -f $pfad/91-tab-subjects.json
+
+	
+	
+	;;
+    
+    unpack)
+	upstream_pack=$1
+	upstream_dir=$2
+
+	tar -x -z -f "${upstream_pack}" -C "${upstream_dir}" 
+
+	;;
+    
+    *)
+	;;
+esac

@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Jitsi Meet (switch.ch)
+GenericName=Jitsi Meet
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/jitsi.png
+Exec=/usr/share/bin/webapps  https://open.meet.switch.ch
+Terminal=false
+Categories=Education

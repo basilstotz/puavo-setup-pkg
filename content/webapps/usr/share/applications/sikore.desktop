@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=SiKoRe
+GenericName=SiKoRe
+Comment="Sicheres Kopfrechnen"
+Keywords="lp21 mathematik zahl variable"
+Icon=sikore.png
+Exec=/usr/share/bin/webapps http://www.sikore.schiffner-tischer.de/
+Terminal=false
+Categories=Education

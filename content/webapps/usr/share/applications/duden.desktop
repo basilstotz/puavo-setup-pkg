@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Duden
+GenericName=Wörterbuch
+Comment="Im Duden online nachschlagen"
+Keywords="lp21 sprachen deutsch"
+Icon=duden.png
+Exec=/usr/share/bin/webapps http://www.duden.de/woerterbuch
+Terminal=false
+Categories=Education

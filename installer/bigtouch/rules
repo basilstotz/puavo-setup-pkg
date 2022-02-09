@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+PFAD="usr/share/gnome-shell/extensions"
+
+case "${command}" in
+  configure)
+    upstream_dir=$1
+    ln -fns "${upstream_dir}/setup-gmone-touch.sh" /etc/profile.d/setup-gnome-touch.sh
+    test -d /$PFAD/bigtouch-ux@puavo.org && rm -rf /$PFAD/bigtouch-ux@puavo.org 
+    ln -fns "${upstream_dir}/bigtouch-ux@puavo.org" /$PFAD/bigtouch-ux@puavo.org 
+    ;;
+	
+  unconfigure)
+      upstream_dir=$1
+
+      rm -f /etc/profile.d/setup-gnome-touch.sh
+      rm -f /$PFAD/bigtouch-ux@puavo.org 
+    ;;
+  
+  unpack)
+    upstream_pack=$1
+    upstream_dir=$2
+    tar  -x -f "$upstream_pack" -C "$upstream_dir"
+    ;;
+  
+  *)
+    ;;
+esac

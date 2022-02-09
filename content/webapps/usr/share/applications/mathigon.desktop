@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Mathigon
+GenericName=Mathigon
+Comment="Mathe lernen"
+Keywords=""
+Icon=/usr/share/pixmaps/mathigon.png
+Exec=/usr/share/bin/webapps  https://de.mathigon.org
+Terminal=false
+Categories=Education

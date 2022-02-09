@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Mornin - Audiokonferenz
+GenericName=Audiokonferenz
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/mornin.png
+Exec=/usr/share/bin/webapps  https://mornin.fm
+Terminal=false
+Categories=Education

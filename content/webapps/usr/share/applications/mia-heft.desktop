@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Mia Heft
+GenericName=Mia Heft
+Comment="Informatik in 1. Zyklus"
+Keywords=""
+Icon=/usr/share/pixmaps/mia-heft.png
+Exec=/usr/share/bin/webapps https://www.mia-heft.ch/
+Terminal=false
+Categories=Education

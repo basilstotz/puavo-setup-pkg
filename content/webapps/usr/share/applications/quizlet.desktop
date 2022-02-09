@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Quizlet
+GenericName=Quizlet
+Comment="Lernen mit Quizlet"
+Keywords=""
+Icon=/usr/share/pixmaps/quizlet.png
+Exec=/usr/share/bin/webapps  https://quizlet.com/de/
+Terminal=false
+Categories=Education

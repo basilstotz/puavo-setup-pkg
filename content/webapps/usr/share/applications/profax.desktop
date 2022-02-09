@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Profax
+GenericName=Profax
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/profax.png
+Exec=/usr/share/bin/webapps https://www.profaxonline.com
+Terminal=false
+Categories=Education

@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Oncoo
+GenericName=Oncoo
+Comment="Online kooperieren"
+Keywords=""
+Icon=/usr/share/pixmaps/oncoo.jpg
+Exec=/usr/share/bin/webapps https://www.oncoo.de/
+Terminal=false
+Categories=Education

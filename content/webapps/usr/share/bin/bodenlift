@@ -1,0 +1,14 @@
+#!/bin/sh
+SHORT_LANG="$(echo $LANG | awk -F_ '{print $1}')"
+
+case "${SHORT_LANG}" in
+	fr)
+		/usr/share/bin/webapps "http://www.bodenreise.ch/fr/"
+		;;
+	it)
+		/usr/share/bin/webapps "http://www.bodenreise.ch/it/"
+		;;
+	*)
+		/usr/share/bin/webapps "http://www.bodenreise.ch/"
+		;;
+esac

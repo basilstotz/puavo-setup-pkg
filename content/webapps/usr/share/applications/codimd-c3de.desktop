@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=CodiMD (c3de.de)
+GenericName=CodiMD
+Comment="Online mit MD Office kollaboreiren"
+Keywords=""
+Icon=/usr/share/pixmaps/meetzide_logo.png
+Exec=/usr/share/bin/webapps https://codimd.c3d2.de
+Terminal=false
+Categories=Education

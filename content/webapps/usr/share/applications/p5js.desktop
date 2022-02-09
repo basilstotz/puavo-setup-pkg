@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=p5js - JavaScript-IDE
+GenericName=JavScript-IDE
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/p5js.png
+Exec=/usr/share/bin/webapps https://editor.p5js.org
+Terminal=false
+Categories=Education

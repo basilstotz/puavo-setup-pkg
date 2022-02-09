@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Mathwelt
+GenericName=Mathwelt
+Comment="Mathe üben"
+Keywords="lp21 mathematik üben"
+Icon=mathwelt2-1.png
+Exec=webapps http://www.mathwelt2.ch/content/
+Terminal=false
+Categories=Education

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Impressive
+Comment=Presenter for PDFs
+Exec=/usr/share/bin/impressive.sh %f
+Terminal=false
+Type=Application
+Icon=impressive.png
+Categories=Office;
+

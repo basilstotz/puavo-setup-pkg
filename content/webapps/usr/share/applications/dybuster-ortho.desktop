@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Dybuster-Orthograph
+GenericName=Dybuster-Orthograph
+Comment="Dyslexie Training"
+Keywords="lp21 deutsch dyslexy"
+Icon=dybuster.png
+Exec=/usr/share/bin/webapps https://go.dybuster.com/orthograph/training/?lang=de-ch
+Terminal=false
+Categories=Education

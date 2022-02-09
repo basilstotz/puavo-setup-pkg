@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Lerntrix
+GenericName=Lerntrix
+Comment="Rechenwerkstatt"
+Keywords="lp21 mathematik zahl variable operieren benennen"
+Icon=lerntrix.png
+Exec=/usr/share/bin/webapps http://www.labbe.de/lerntrix/index_mg.asp
+Terminal=false
+Categories=Education

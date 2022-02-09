@@ -1,0 +1,23 @@
+#!/bin/sh
+SHORT_LANG="$(echo $LANG | awk -F_ '{print $1}')"
+
+case "${SHORT_LANG}" in
+	pl)
+		/usr/share/bin/webapps http://synonimy.ux.pl
+		;;
+	pt)
+		/usr/share/bin/webapps http://openthesaurus.caixamagica.pt
+		;;
+	sk)
+		/usr/share/bin/webapps http://www.openthesaurus.tk
+		;;
+	sl)
+		/usr/share/bin/webapps http://www.tezaver.si
+		;;
+	es)
+		/usr/share/bin/webapps http://openthes-es.berlios.de
+		;;
+	*)
+		/usr/share/bin/webapps http://www.openthesaurus.de
+		;;
+esac

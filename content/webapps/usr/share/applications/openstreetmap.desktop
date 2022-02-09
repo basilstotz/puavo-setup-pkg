@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=OpenStreetMap
+GenericName=OpenStreetMap
+Comment="Online Karte"
+Keywords="lp21 nmg räume geografie"
+Icon=openstreetmap.png
+Exec=/usr/share/bin/webapps http://www.openstreetmap.ch
+Terminal=false
+Categories=Education

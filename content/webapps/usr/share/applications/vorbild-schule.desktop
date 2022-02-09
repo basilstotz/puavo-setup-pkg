@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Mathespiel
+GenericName=Mathespiel
+Comment="Mathe üben 1. Zyklus"
+Keywords=""
+Icon=/usr/share/pixmaps/vorbild-schule.png
+Exec=/usr/share/bin/webapps  https://mathe.vorbild-schule.de/gameMode
+Terminal=false
+Categories=Education

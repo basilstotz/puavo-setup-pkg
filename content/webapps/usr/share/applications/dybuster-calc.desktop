@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Dybuster-Calcularis
+GenericName=Dybuster-Calcularis
+Comment="Dyskalkülie Training"
+Keywords="lp21 mathe dyskalkülie"
+Icon=dybuster.png
+Exec=/usr/share/bin/webapps https://go.dybuster.com/calcularis/training/?lang=de-ch
+Terminal=false
+Categories=Education

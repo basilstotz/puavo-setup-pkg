@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Remarkise - MD im Browser
+GenericName=Remarkise - MD im Browser
+Comment="Markdown Präsentationen in Browser"
+Keywords=""
+Icon=/usr/share/pixmaps/remarkise.png
+Exec=/usr/share/bin/webapps  https://tripu.github.io/remark/remarkise
+Terminal=false
+Categories=Education

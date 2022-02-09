@@ -1,0 +1,11 @@
+#!/bin/sh
+SHORT_LANG="$(echo $LANG | awk -F_ '{print $1}')"
+
+case "${SHORT_LANG}" in
+	de)
+		/usr/share/bin/wabapps http://www.mathe-im-netz.de
+		;;
+	*)
+		/usr/share/bin/wabapps http://www.maths-on-the-net.com
+		;;
+esac

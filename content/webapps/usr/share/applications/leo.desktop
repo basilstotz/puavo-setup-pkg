@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Leo
+GenericName=Leo
+Comment="Wörterbücher"
+Keywords="lp21 sprachen deutsch französisch englich"
+Icon=leo.png
+Exec=webapps http://www.leo.org
+Terminal=false
+Categories=Education

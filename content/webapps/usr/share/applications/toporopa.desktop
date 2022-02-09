@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Geography;
+Exec=/usr/share/bin/toporopa
+Icon=toporopa
+Name=Toporopa (online)
+GenericName=European geography
+GenericName[de]=Europäische Geografie
+Type=Application

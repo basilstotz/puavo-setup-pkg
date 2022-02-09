@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=MiniBooks
+GenericName=MiniBooks 
+Comment="Kleine Bücher herstellen"
+Keywords="lp21 sprachen deutsch französisch italienisch schreiben"
+Icon=minibooks.png
+Exec=/usr/share/bin/webapps http://www.minibooks.ch
+Terminal=false
+Categories=Education

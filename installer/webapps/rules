@@ -1,0 +1,63 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+
+case "${command}" in
+  configure)
+    upstream_dir=$1
+
+
+    for desktop in "${upstream_dir}"/webapps/usr/share/applications/*.desktop; do
+	item=$(basename "$desktop")
+      ln -fns "${desktop}" "/usr/share/applications/${item}"
+    done
+
+    for icon in "${upstream_dir}"/webapps/usr/share/pixmaps/*.*; do
+	item=$(basename "$icon")
+      ln -fns "${icon}" "/usr/share/pixmaps/${item}"
+    done
+
+    mkdir -p /usr/share/bin/
+    for bin in "${upstream_dir}"/webapps/usr/share/bin/*; do
+	item=$(basename "$bin")
+        ln -fns "${upstream_dir}/webapps/usr/share/bin/${item}" "/usr/share/bin/${item}"
+    done
+
+    
+    ;;
+  unconfigure)
+    upstream_dir=$1
+
+
+    for desktop in "${upstream_dir}"/webapps/usr/share/applications/*.desktop; do
+	item=$(basename "$desktop")
+        rm -f "/usr/share/applications/${item}"
+    done
+
+    for icon in "${upstream_dir}"/webapps/usr/share/pixmaps/*.*; do
+	item=$(basename "$icon")
+        rm -f  "/usr/share/pixmaps/${item}"
+    done
+
+    for bin in "${upstream_dir}"/webapps/usr/share/bin/*; do
+	item=$(basename "$bin")
+        rm -f "/usr/share/bin/${item}"
+    done
+
+    
+
+      
+    ;;
+  unpack)
+    upstream_pack=$1
+    upstream_dir=$2
+
+    tar -x -z -f "$upstream_pack" -C "$upstream_dir" || true
+    ;;
+  *)
+    ;;
+esac

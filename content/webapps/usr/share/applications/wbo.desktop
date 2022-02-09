@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=WB-Ophir Online Whiteboard
+GenericName=Online Whitboard
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/wbo.jpg
+Exec=/usr/share/bin/webapps https://wbo.ophir.dev
+Terminal=false
+Categories=Education

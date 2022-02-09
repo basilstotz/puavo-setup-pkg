@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=More Cambrige English
+GenericName=More Cambrige English
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/more-app.png
+Exec=/usr/share/bin/webapps https://moreciip.cambridge.org
+Terminal=false
+Categories=Education

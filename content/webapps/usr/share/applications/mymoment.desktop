@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=MyMoments
+GenericName=MyMoment 
+Comment="Schreiben und lesen"
+Keywords="lp21 sprachen deutsch lesen schreiben"
+Icon=mymoment.png
+Exec=/usr/share/bin/webapps http://www.mymoment.ch
+Terminal=false
+Categories=Education

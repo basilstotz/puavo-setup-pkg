@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Mathe im Netz
+GenericName=Mathe im Netz
+Comment="Rechnen üben (1. bis 4.Klasse)"
+Keywords="lp21 mathemathik zahl variable operieren benennen"
+Icon=mathe-im-netz.png
+Exec=/usr/share/bin/webapps http://www.mathe-im-netz.de
+Terminal=false
+Categories=Education

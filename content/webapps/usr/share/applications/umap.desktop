@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=uMap
+GenericName=uMap
+Comment="Karten zeichnen"
+Keywords="karten geografie zeichnen"
+Icon=umap.png
+Exec=/usr/share/bin/webapps https://umap.osm.ch/de/
+Terminal=false
+Categories=Education

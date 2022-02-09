@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Bodenreise
+GenericName=Bodenreise
+Comment="Entdecke den Boden"
+Keywords="lp21 nmg natur biologie"
+Icon=bodenreise.png
+Exec=/usr/share/bin/bodenlift
+Terminal=false
+Categories=Education

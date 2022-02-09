@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Zeitklicks
+GenericName=Zeitklicks
+Comment="Flubidux und die Tönebox"
+Keywords="lp21 musik hören"
+Icon=zeitklicks.png
+Exec=/usr/share/bin/webapps http://www.zeitklicks.de/zeitklicks
+Terminal=false
+Categories=Education

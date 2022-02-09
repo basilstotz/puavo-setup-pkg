@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=OBS Tablet Remote
+GenericName=
+Comment="OBS mit Tablet steuern"
+Keywords=""
+Icon=/usr/share/pixmaps/obs-studio.png
+Exec=/usr/share/bin/webapps http://t2t2.github.io/obs-tablet-remote
+Terminal=false
+Categories=Education

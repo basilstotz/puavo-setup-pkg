@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Workadventure
+GenericName=Workadventure
+Comment="Online kooperieren als Spiel"
+Keywords=""
+Icon=/usr/share/pixmaps/workadventure.png
+Exec=/usr/share/bin/webapps  https://workadventu.re
+Terminal=false
+Categories=Education

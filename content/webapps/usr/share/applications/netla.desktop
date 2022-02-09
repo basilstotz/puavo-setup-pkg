@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=NetLa
+GenericName=NetLa 
+Comment="Meine Daten gehören mir"
+Keywords="lp21 nmg ict medien"
+Icon=netla.png
+Exec=/usr/share/bin/webapps http://www.netla.ch
+Terminal=false
+Categories=Education

@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=CryptPad - Online Kolaborieren
+GenericName=Online Kolaborieren
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/cryptpad.png
+Exec=/usr/share/bin/webapps https://cryptpad.fr
+Terminal=false
+Categories=Education

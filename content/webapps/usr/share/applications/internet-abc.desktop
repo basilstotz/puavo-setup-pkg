@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Internet ABC
+GenericName= Internet ABC
+Comment="Umgang mit dem Interent"
+Keywords="lp21 ict medien"
+Icon=internet-abc.png
+Exec=/usr/share/bin/webapps http://www.internet-abc.ch/kinder/
+Terminal=false
+Categories=Education

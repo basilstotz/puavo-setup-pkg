@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=fragFINN
+GenericName=fragFINN 
+Comment="Das Netz für Kids"
+Keywords="lp21 alle ict medien"
+Icon=fragfinn.png
+Exec=/usr/share/bin/webapps http://www.fragfinn.de
+Terminal=false
+Categories=Education

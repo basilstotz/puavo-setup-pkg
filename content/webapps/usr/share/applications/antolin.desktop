@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Antolin
+GenericName=Antolin 
+Comment="Mit lesen Punkten"
+Keywords="lp21 sprachen deutsch lesen"
+Icon=antolin.png
+Exec=/usr/share/bin/webapps https://www.antolin.de
+Terminal=false
+Categories=Education

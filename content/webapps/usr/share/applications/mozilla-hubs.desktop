@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Mozilla Hubs - Videokonferenz
+GenericName=Videokonferenz
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/mozilla-hubs.png
+Exec=/usr/share/bin/webapps  https://hubs.mozilla.com
+Terminal=false
+Categories=Education

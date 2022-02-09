@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=BigBlueButton Videokonferenz
+GenericName=Videokonferenz
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/BigBlueButton.png
+Exec=/usr/share/bin/webapps  https://bbb.ch-open.ch
+Terminal=false
+Categories=Education

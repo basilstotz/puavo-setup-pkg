@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Helles Köpfchen
+GenericName=Helles Köpfchen
+Comment="Website für Kinder"
+Keywords="lp21 deutsch"
+Icon=helles-koepfchen.png
+Exec=/usr/share/bin/webapps https://www.helles-koepfchen.de
+Terminal=false
+Categories=Education

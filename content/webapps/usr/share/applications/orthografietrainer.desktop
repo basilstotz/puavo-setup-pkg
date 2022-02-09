@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=OrthoGrafieTrainer
+GenericName=OrtoGrafieTrainer
+Comment="Rechtschreibung üben"
+Keywords="lp21 sprachen deutsch"
+Icon=orthografietrainer.png
+Exec=/usr/share/bin/webapps http://www.orthografietrainer.net
+Terminal=false
+Categories=Education

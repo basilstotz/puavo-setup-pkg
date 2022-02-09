@@ -1,0 +1,46 @@
+#!/bin/bash
+# SPDX-License-Identifier: GPL-2.0
+#
+#  https://git.zx2c4.com/wireguard-tools/plain/contrib/ncat-client-server/server.sh
+#
+# Copyright (C) 2015-2020 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+
+nic="ltsp0"
+
+test "$(puavo-conf puavo.hosttype)" = "bootserver" || exit 0
+
+if [[ -z $NCAT_REMOTE_ADDR ]]; then
+        if ip link | grep -q $nic; then
+	    if wg show $nic 2>&1 >/dev/null; then
+               ip link del dev $nic 2>&1 >/dev/null
+	    else
+  	       echo "error: interface $nic allready exists. sleeping now ..."
+	       sleep 9999999999999999	
+	    fi
+	fi
+	
+	set -e
+	ip link add dev $nic type wireguard
+	ip address add 10.249.15.254/20 dev $nic
+	wg set $nic private-key <(wg genkey) listen-port 12912
+	ip link set up dev $nic
+	echo "*"
+	exec ncat -e "$(readlink -f "$0")" -k -l -p 42912 -v
+fi
+IFS=: read -r public_key hostname
+
+#if host $hostname.ltsp.$(cat /etc/puavo/domain) 2>&1 >/dev/null;then
+
+[[ $(wg show $nic peers | wc -l) -ge 253 ]] && wg set $nic peer $(wg show $nic latest-handshakes | sort -k 2 -b -n | head -n 1 | cut -f 1) remove
+
+next_ip=$(all="$(wg show $nic allowed-ips)"; for ((i=2; i<=254; i++)); do ip="10.249.0.$i"; [[ $all != *$ip/32* ]] && echo $ip && break; done)
+
+    #next_ip=$(host $hostname | head -n1 | cut -d\  -f4)
+
+    wg set $nic peer "$public_key" allowed-ips $next_ip/32 2>/dev/null && echo "OK:$(wg show $nic private-key | wg pubkey):$(wg show $nic listen-port):$next_ip" || echo ERROR
+
+#else
+#    echo NOTFOUND
+#fi
+
+

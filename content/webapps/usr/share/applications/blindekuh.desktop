@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name="Blinde Kuh"
+GenericName=Suchmaschine 
+Comment="Die Suchmaschine für Kinder"
+Keywords="lp21 alle ict medien"
+Icon=blindekuh.png
+Exec=/usr/share/bin/webapps http://www.blinde-kuh.ch
+Terminal=false
+Categories=Education

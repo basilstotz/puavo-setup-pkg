@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Google Übersetzer
+GenericName="Google Translate"
+Comment="Sprachen übersetzen"
+Keywords="lp21 sprachen deutsch französich italienisch"
+Icon=google-translate.png
+Exec=/usr/share/bin/webapps https://translate.google.ch/
+Terminal=false
+Categories=Education

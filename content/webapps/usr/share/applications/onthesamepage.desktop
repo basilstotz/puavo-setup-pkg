@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=OnTheSamePage
+GenericName=OnTheSamePage
+Comment="Entdecke den Wald"
+Keywords="whiteboard zeichnen"
+Icon=onthesamepage.png
+Exec=/usr/share/bin/webapps https://onthesamepage.online
+Terminal=false
+Categories=Education

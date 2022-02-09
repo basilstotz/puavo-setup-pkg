@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Kahoot!
+GenericName=Kahoot!
+Comment="Lernspiel"
+Keywords=""
+Icon=/usr/share/pixmaps/kahoot.png
+Exec=/usr/share/bin/webapps https://kahoot.com/
+Terminal=false
+Categories=Education

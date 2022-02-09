@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Dis Donc 5
+GenericName=Dis Donc 5
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/dis-donc-5.png
+Exec=/usr/share/bin/webapps  https://002.lmvz.ch/dis-donc-5-lernplattform
+Terminal=false
+Categories=Education

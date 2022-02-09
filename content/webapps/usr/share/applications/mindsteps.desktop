@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=MindSteps
+GenericName=MindSteps
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/mindsteps.png
+Exec=/usr/share/bin/webapps https://user.mindsteps.ch
+Terminal=false
+Categories=Education

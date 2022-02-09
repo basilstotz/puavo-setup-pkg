@@ -1,0 +1,26 @@
+#!/bin/sh
+SHORT_LANG="$(echo $LANG | awk -F_ '{print $1}')"
+
+case "${SHORT_LANG}" in
+	de)
+		/usr/share/bin/webapps http://phet.colorado.edu/de/simulations/category/new
+		;;
+	es)
+		/usr/share/bin/webapps http://phet.colorado.edu/es/simulations/category/new
+		;;
+	fr)
+		/usr/share/bin/webapps http://phet.colorado.edu/fr/simulations/category/new
+		;;
+	it)
+		/usr/share/bin/webapps http://phet.colorado.edu/it/simulations/category/new
+		;;
+	pt)
+		/usr/share/bin/webapps http://phet.colorado.edu/pt/simulations/category/new
+		;;
+	pt_BR)
+		/usr/share/bin/webapps http://phet.colorado.edu/pt_BR/simulations/category/new
+		;;
+	*)
+		/usr/share/bin/webapps http://phet.colorado.edu/en/simulations/category/new
+		;;
+esac

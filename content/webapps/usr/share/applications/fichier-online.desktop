@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Fichier Online
+GenericName=
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/fichier.png
+Exec=/usr/share/bin/webapps https://www.s-fichier.ch
+Terminal=false
+Categories=Education

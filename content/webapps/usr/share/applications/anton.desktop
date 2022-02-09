@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Anton
+GenericName=Lernumgebung Anton
+Comment="Lernumbegung Anton"
+Keywords="whiteboard zeichnen"
+Icon=anton.png
+Exec=/usr/share/bin/webapps https://anton.app
+Terminal=false
+Categories=Education

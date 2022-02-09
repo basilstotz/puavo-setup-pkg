@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Blockly
+GenericName=Blockly 
+Comment="LerneProgamieren"
+Keywords="lp21 sprachen deutsch lesen"
+Icon=/usr/share/pixmaps/blockly.png
+Exec=/usr/share/bin/webapps https://blockly-games.appspot.com
+Terminal=false
+Categories=Development

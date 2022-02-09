@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Duolingo
+GenericName=Duolingo
+Comment="Mit Duolingo sprachen lernen"
+Keywords="lp21 sprachen Englisch Frnzösisch"
+Icon=duolingo.png
+Exec=webapps http://www.duolingo.com
+Terminal=false
+Categories=Education

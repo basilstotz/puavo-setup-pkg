@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Matrix Element Messenger
+GenericName=Matrix Element Messenger
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/matrix-logo.png
+Exec=/usr/share/bin/webapps  https://app.element.io
+Terminal=false
+Categories=Education

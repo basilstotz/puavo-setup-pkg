@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Meetzi Videokonferenz
+GenericName=Videokonferenz
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/meetzide_logo.png
+Exec=/usr/share/bin/webapps  https://klassenzimmer.meetzi.de
+Terminal=false
+Categories=Education

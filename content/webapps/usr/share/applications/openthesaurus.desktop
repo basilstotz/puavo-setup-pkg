@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=OpenThesaurus
+GenericName=OpenThesaurus
+Comment="Synomyme und Assoziationen finden"
+Keywords="lp21 sprachen deutsch "
+Icon=openthesaurus.png
+Exec=/usr/share/bin/webapps http://www.openthesaurus.de
+Terminal=false
+Categories=Education

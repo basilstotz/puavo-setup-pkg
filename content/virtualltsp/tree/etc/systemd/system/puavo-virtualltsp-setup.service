@@ -1,0 +1,11 @@
+[Unit]
+Description=Announce Puavo Devices
+After=network-online-target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/puavo-virtualltsp-setup
+
+[Install]
+WantedBy=multi-user.target

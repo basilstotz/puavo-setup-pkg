@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=
+GenericName=
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/
+Exec=/usr/share/bin/webapps
+Terminal=false
+Categories=Education

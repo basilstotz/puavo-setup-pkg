@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Scratch3
+GenericName=Scratch3
+Comment="Mit Scratch online programmieren"
+Keywords="programmieren online"
+Icon=scratch3.png
+Exec=/usr/share/bin/webapps https://scratch.mit.edu/projects/editor/  
+Terminal=false
+Categories=Education
