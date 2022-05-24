@@ -17,6 +17,19 @@ case "${command}" in
         ln -fns "$upstream_dir/puavomenu/91-tab-main.json" $pfad/91-tab-main.json
         ln -fns "$upstream_dir/puavomenu/91-tab-subjects.json" $pfad/91-tab-subjects.json
 
+	cat <<EOF > /etc/systemd/system/puavomenu-moreapps.service
+[Unit]
+Description=Make Menu Moreapps
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/puavomenu-moreapps
+
+[Install]
+WantedBy=multi-user.target
+EOF
+	systemctl enable puavomenu-moreapps.service
+
 	;;
     
     unconfigure)
@@ -25,7 +38,7 @@ case "${command}" in
         rm -f $pfad/91-tab-main.json
         rm -f $pfad/91-tab-subjects.json
 
-	
+	rm -f /etc/systemd/system/puavomenu-moreapps.service
 	
 	;;
     
