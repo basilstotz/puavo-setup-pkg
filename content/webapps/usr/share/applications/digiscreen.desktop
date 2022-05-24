@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=DigiScreen
+GenericName=Whiteboard Screen
+Comment=Whiteboard Screen
+Keywords=whiteboard;online
+Icon=/usr/share/pixmaps/digiscreen.png
+Exec=/usr/share/bin/webapps https://ladigitale.dev/digiscreen/
+Terminal=false
+Categories=Education

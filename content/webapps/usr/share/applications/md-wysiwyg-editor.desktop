@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=md-wysiwyg-editor
+GenericName=Markdown Editor
+Comment=Markdown Editor
+Keywords=Markdown Editor
+Icon=/usr/share/pixmaps/md-wysiwyg-editor.png
+Exec=/usr/share/bin/webapps https://amxa.ch/md-wysiwyg-editor/index.html
+Terminal=false
+Categories=Education
