@@ -2,7 +2,7 @@
 
 cd $(dirname $0)
 
-cp ./puavo-pkg-renew /usr/local/sbin/.
+cp ./puavo-safesearch /usr/local/sbin/.
 
 
 cat <<EOF > /etc/systemd/system/puavo-safesearch.service
