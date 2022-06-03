@@ -14,11 +14,16 @@ get_my_address(){
     until $erfolg; do
 	nm-online -q -t 3600
 
-        my_address=$(curl -s --get --data-urlencode "apikey=$key" --data-urlencode "publickey=$my_publickey" $url/$school/$hostname)  
+        answer=$(curl -s --get --data-urlencode "apikey=$key" --data-urlencode "publickey=$my_publickey" $url/$school/$hostname)  
 
 
-	if test -n "$my_address"; then
+	if test -n "answer"; then
 	    erfolg=true
+            my_address=$(echo $answer|cut -d" " -f1)
+            subnetmask=$(echo $answer|cut -d" " -f2)
+            server_address=$(echo $answer|cut -d" " -f3)
+            netmask=$(echo $answer|cut -d" " -f4)
+            echo $answer|cut -d" " -f5 > /tmp/preshared
 	else
 	    echo sleep
 	    sleep 10
@@ -38,21 +43,23 @@ link_down(){
 
 #peer
 endpoint=$(puavo-conf puavo.wg.peer.endpoint)
-publickey=$(puavo-conf puavo.wg.peer.publickey)
-presharedkey=$(puavo-conf puavo.wg.peer.preshared)
-allowedips=$(puavo-conf puavo.wg.peer.allowedips)
-subnetmask=$(puavo-conf puavo.wg.network.netmask)
+publickey=$(puavo-conf puavo.wg.peer.public)
+#presharedkey=$(puavo-conf puavo.wg.peer.preshared)
+#allowedmask=$(puavo-conf puavo.wg.peer.allowedips)
+#subnetmask=$(puavo-conf puavo.wg.network.netmask)
+skope=$(puavo-conf puavo.wg.network.skope)
+
 
 #echo puavo-conf $endpoint -  $publickey # - $presharedkey - $allowedips -
 
 test -n "$endpoint" || exit 0
 test -n "$publickey" || exit 0
 #test -n "$presharedkey" || exit 0
-test -n "$allowedips" || exit 0
-test -n "$subnetmask" || exit 0
+#test -n "$allowedips" || exit 0
+test -n "$skope" || exit 0
 
 my_privatekey=$(wg genkey)
-echo $my_privatekey > /tmp/private.key
+echo $my_privatekey > /tmp/private
 my_publickey=$(echo $my_privatekey|wg pubkey)
 
 #echo "my_keys: $my_privatekey $my_publickey"
@@ -64,21 +71,39 @@ test -n "$my_address" || exit 1
 link_down
 
 #echo "configure...."
-ip link add dev $device type wireguard; 
-ip address add dev $device $my_address/$subnetmask; 
+ip link add dev $device type wireguard;
+case $skope; in
+    none)
+	ip address add dev $device $my_address peer $server_address
+	allowedips=$serverip/32
+	;;
+    school)
+	ip address add dev $device $my_address/$subnetmask
+	allowedips=$(ipcalc $my_address/$subnetmask|grep Network|xargs|cut -d" " -f2)\
+	;;
+    all)
+	ip address add dev $device $my_address/$netmask
+	allowdeips=$(ipcalc $my_address/$netmask|grep Network|xargs|cut -d" " -f2)\
+	;;
+    *)
+	exit 1
+	;;
+esac
+ 
 ip link set multicast on dev $device;
 
 # maybe: private-key <(echo "$privatekey")
 
 wg set $device\
-   private-key /tmp/private.key\
+   private-key /tmp/private\
+   preshared-key /tmp/preshared\
    peer $publickey\
    endpoint $endpoint\
-   allowed-ips $allowedips\
+   allowed-ips $allowdips\
    persistent-keepalive 25
 
-rm /tmp/private.key
-
+rm /tmp/private
+rm /tmp/preshared
 
 ip link set $device up; 
 #ip route add $allowedips dev $device;
@@ -87,3 +112,4 @@ echo "link is up"
 
 
 exit 0
+ 

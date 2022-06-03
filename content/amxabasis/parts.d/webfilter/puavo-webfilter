@@ -1,11 +1,12 @@
 #!/bin/sh
 
 
+HOSTTYPE="$(puavo-conf puavo.hosttype)"
+test "$HOSTTYPE" = "bootserver" && exit 0
 
-echo "setting up dnsfilter"
-    
-if grep -q -v google /etc/hosts; then
+echo "setting up webfilter"
 
+if ! test  "$(puavo-conf puavo.webfilter.safesearch 2>/dev/null)" = "false"; then
     cat << EOF >> /etc/hosts
 #
 # force safesaerch for google
@@ -44,32 +45,98 @@ if grep -q -v google /etc/hosts; then
 216.239.38.120 www.google.co.uz www.google.com.vc www.google.co.ve www.google.vg www.google.co.vi
 216.239.38.120 www.google.com.vn www.google.vu www.google.ws www.google.rs www.google.co.za
 216.239.38.120 www.google.co.zm www.google.co.zw www.google.cat
-# force youtube strikt
-#78.41.204.29 www.youtube.com
-#78.41.204.29 m.youtube.com
-#78.41.204.29 youtubei.googleapis.com
-#78.41.204.29 youtube.googleapis.com
-#78.41.204.29 www.youtube-nocookie.com
 # force bing strikt
 204.79.197.220 www.bing.com bing.com
 # force safesearch duckduckgo
 176.34.131.233 duckduckgo.com www.duckduckgo.com
 EOF
-
 fi
 
-DNSFILTER="$(puavo-conf puavo.dnsfilter.address 2>/dev/null)"
-HOSTTYPE="$(puavo-conf puavo.hosttype)"
-GATEWAY="$(ip route|grep default|cut -d" " -f3)"
-
-if test -n "$DNSFILTER" -a "$HOSTTYPE" = "laptop"; then
-    if ! test "$GATEWAY" = "10.249.15.254"; then
-	OLD="$(cat /etc/resolv.conf)"
-	echo "nameserver $DNSFILTER" > /etc/resolv.conf
-	echo "$OLD" >> /etc/resolv.conf
-    fi
+    
+if test  "$(puavo-conf puavo.webfilter.safetube 2>/dev/null)" = "true"; then
+    cat <<EOF >> /etc/hosts
+#
+# force youtube strikt
+78.41.204.29 www.youtube.com
+78.41.204.29 m.youtube.com
+78.41.204.29 youtubei.googleapis.com
+78.41.204.29 youtube.googleapis.com
+78.41.204.29 www.youtube-nocookie.com
+EOF
 fi
 
+test "$HOSTTYPE" = "laptop" || exit 0
+test -z "$(/usr/lib/puavo-ltsp-client/lookup-image-server-by-dns)" || exit 0
+
+PROVIDER="$(puavo-conf puavo.webfilter.dnsprovider 2>/dev/null)"
+test -n "$PROVIDER" || exit 0 
+
+case "$PROVIDER" in
+    cloudflare-uncensored|cloudflare)
+	DNS1="1.1.1.1"
+	DNS2="1.0.0.1"
+    ;;
+    cloudflare-malware)
+	DNS1="1.1.1.2"
+	DNS2="1.0.0.2"
+    ;;
+    cloudflare-malware+adult)
+	DNS1="1.1.1.3"
+	DNS2="1.0.0.3"
+    ;;    
+    googe-uncensored|google)
+	DNS1="8.8.8.8"
+	DNS2="4.4.4.4"
+    ;;
+    quad9-malware|quad9)
+	DNS1="9.9.9.9"
+	DNS2="149.112.112.112"
+    ;;
+    cleanbrowsing|cleanbrowsing-security)
+	DNS1="185.228.168.9"
+	DNS2="185.228.169.9"
+    ;;
+    cleanbrowsing-family)
+	DNS1="185.228.168.168"	
+	DNS2="185.228.169.168"
+    ;;
+    cleanbrowsing-adult)
+	DNS1="185.228.168.10"
+	DNS2="185.228.169.11"
+    ;;
+    adguard-nonfiltering|adguard-uncensored)
+	DNS1="94.140.14.140"
+	DNS2="94.140.14.141"
+    ;;
+    adguard|adguard-adblock)
+	DNS1="94.140.14.14"
+	DNS2="94.140.15.15"
+    ;;
+    adguard-adblock+family)
+	DNS1="94.140.14.15"
+	DNS2="94.140.15.16"
+    ;;
+    opendns|opendns-malware)
+	DNS1="208.67.222.222"
+	DNS2="208.67.220.220"
+    ;;
+    opendns-family|opendns-family+malware)
+	DNS1="208.67.222.123"
+	DNS2="208.67.220.123"
+    ;;
+    *)
+	DNS1="8.8.8.8"
+	DNS2="4.4.4.4"
+    ;;
+esac
+    
+
+OLD="$(cat /etc/resolv.conf)"
+echo "nameserver $DNS1" >  /etc/resolv.conf
+#echo "nameserver $DNS2" >> /etc/resolv.conf
+echo "$OLD"             >> /etc/resolv.conf
+
+ 
 exit 0
 
 
