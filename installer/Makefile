@@ -6,11 +6,11 @@ INSTALL = install
 INSTALL_DATA = $(INSTALL) -m 644
 
 packagedirs   = amxabasis
-packagedirs  += bigtouch
+#packagedirs  += bigtouch
 packagedirs  += puavomenu
-packagedirs  += virtualltsp
+#packagedirs  += virtualltsp
 packagedirs  += webapps
-packagedirs  += wireguard
+#packagedirs  += wireguard
 
 
 

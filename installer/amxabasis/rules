@@ -1,26 +1,21 @@
 #!/bin/sh
-
 set -eu
-
-
 
 command=$1
 shift
 
-
-
 case "${command}" in
 
-
-    configure)
+    configure|unconfigure)
 	upstream_dir=$1
 
-	"$upstream_dir"/amxabasis/install.sh
-
-	;;
-    
-    unconfigure)
-       true	
+	for rules in $(ls $upstream_dir/*/rules); do
+	    if test -x $rules; then
+		name=$(basename $(dirname $rules))
+		echo "$command $name"
+		$rules $command $upstream_dir/$name
+	    fi
+	done
 	;;
     
     unpack)
