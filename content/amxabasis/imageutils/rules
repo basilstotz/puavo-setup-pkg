@@ -10,7 +10,7 @@ shift
 case "${command}" in
   configure)
       upstream_dir=$1
-      dpkg-deb -x ${upstream_dir}/puavo-image-utils_0.1-41_all.deb ${upstream_dir} 
+      dpkg-deb -x ${upstream_dir}/puavo-image-utils_*_all.deb ${upstream_dir} 
       for b in ${upstream_dir}/usr/sbin/*;do
 	  ln -fns $b /usr/local/sbin/$(basename $b)
       done
