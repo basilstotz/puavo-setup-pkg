@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+
+case "${command}" in
+  configure)
+    upstream_dir=$1
+    ln -fns "${upstream_dir}/tree/etc/avahi/avahi-daemon.conf" /etc/avahi/avahi-daemon.conf 
+    ln -fns "${upstream_dir}/tree/usr/local/sbin/puavo-virtualltsp-client" /usr/local/sbin/puavo-virtualltsp-client
+    ln -fns "${upstream_dir}tree/usr/local/bin/puavo-find-puavobox" /usr/local/bin/puavo-find-puavobox 
+
+    systemctl enable puavo-virtualltsp-client.service
+    ;;
+	
+  unconfigure)
+      upstream_dir=$1
+    rm -f /etc/avahi/avahi-daemon.conf 
+    rm -f /usr/local/sbin/puavo-virtualltsp-client
+    rm -f /usr/local/bin/puavo-find-puavobox 
+    ;;
+    
+  *)
+    ;;
+esac

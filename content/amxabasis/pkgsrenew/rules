@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+PFAD="usr/share/gnome-shell/extensions"
+
+case "${command}" in
+  configure)
+    upstream_dir=$1
+    ln -fns "${upstream_dir}/puavo-pkg-renew" /usr/local/sbin/puavo-pkg-renew
+
+    cat <<EOF > /etc/systemd/system/puavo-pkg-renew.service
+[Unit]
+Description=renews puavo packages 
+#After=syslog.target network.target nss-lookup.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/puavo-pkg-renew
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    systemctl enable puavo-pkg-renew.service
+    ;;
+	
+  unconfigure)
+      upstream_dir=$1
+      rm -f /usr/local/sbin/puavo-pkg-renew
+      rm -f /etc/systemd/system/puavo-pkg-renew.service
+      systemctl stop puavo-pkg-renew.service
+      
+      ;;
+    
+  *)
+    ;;
+esac
+
+
+

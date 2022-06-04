@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+
+
+case "${command}" in
+  configure)
+    upstream_dir=$1
+    cp "${upstream_dir}/kemi-art/*" /usr/share/kemi-art/.
+    ;;
+	
+  unconfigure)
+      upstream_dir=$1
+    ;;
+    
+  *)
+    ;;
+esac

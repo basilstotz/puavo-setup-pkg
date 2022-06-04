@@ -1,0 +1,13 @@
+[Unit]
+Description=Wireguard VPN 
+After=syslog.target network.target nss-lookup.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/amxa-wireguard
+Restart=on-failure
+RestartSeconds=300
+
+
+[Install]
+WantedBy=multi-user.target

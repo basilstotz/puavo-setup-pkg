@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+
+case "${command}" in
+  configure)
+    upstream_dir=$1
+    ln -fns "${upstream_dir}/tuxpaint-folder.sh" /etc/profile.d/tuxpaint-folder.sh 
+    ln -fns "${upstream_dir}/tuxpaint.desktop" /usr/share/applications/tuxpaint.desktop 
+    ;;
+	
+  unconfigure)
+      upstream_dir=$1
+    ;;
+    
+  *)
+    ;;
+esac

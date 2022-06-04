@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+
+case "${command}" in
+  configure)
+      upstream_dir=$1
+      for B in "${upstream_dir}/bin/*.sh"; do
+	  if test -x $B; then
+	      echo "executing $(basename $B)"
+	      $B
+	  fi
+      done
+    ;;
+	
+  unconfigure)
+      upstream_dir=$1
+    ;;
+    
+  *)
+    ;;
+esac

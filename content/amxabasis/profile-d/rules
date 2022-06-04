@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+
+case "${command}" in
+  configure)
+      upstream_dir=$1
+      for p in "${upstream_dir}/profile.d/*.sh"; do
+	  ln -fns $p /etc/profile.d/$(basename $p)
+      done
+    ;;
+	
+  unconfigure)
+      upstream_dir=$1
+      for p in "${upstream_dir}/profile.d/*.sh"; do
+	  rm -f /etc/profile.d/$(basename $p)
+      done
+    ;;
+    
+  *)
+    ;;
+esac
