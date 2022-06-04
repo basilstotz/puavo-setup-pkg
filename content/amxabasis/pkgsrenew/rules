@@ -3,14 +3,16 @@
 set -eu
 
 command=$1
-shift
+upstream_dir=$2
+
+cd "${upstream_dir}"
+
 
 PFAD="usr/share/gnome-shell/extensions"
 
 case "${command}" in
   configure)
-    upstream_dir=$1
-    ln -fns "${upstream_dir}/puavo-pkg-renew" /usr/local/sbin/puavo-pkg-renew
+    ln -fns ./puavo-pkg-renew /usr/local/sbin/puavo-pkg-renew
 
     cat <<EOF > /etc/systemd/system/puavo-pkg-renew.service
 [Unit]
@@ -29,7 +31,6 @@ EOF
     ;;
 	
   unconfigure)
-      upstream_dir=$1
       rm -f /usr/local/sbin/puavo-pkg-renew
       rm -f /etc/systemd/system/puavo-pkg-renew.service
       systemctl stop puavo-pkg-renew.service

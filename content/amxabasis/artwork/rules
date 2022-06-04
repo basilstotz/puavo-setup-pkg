@@ -3,18 +3,17 @@
 set -eu
 
 command=$1
-shift
+upstream_dir=$2
 
+cd "${upstream_dir}"
 
 
 case "${command}" in
   configure)
-    upstream_dir=$1
-    cp "${upstream_dir}/kemi-art/*" /usr/share/kemi-art/.
+    cp  ./kemi-art/* /usr/share/kemi-art/.
     ;;
 	
   unconfigure)
-      upstream_dir=$1
     ;;
     
   *)

@@ -2,15 +2,20 @@
 
 set -eu
 
-command=$1
-shift
 
-PFAD="usr/share/gnome-shell/extensions"
+command=$1
+upstream_dir=$2
+
+cd $2
+
+echo $1 $2
+pwd
+ls ./puavo-webfilter
 
 case "${command}" in
-  configure)
-    upstream_dir=$1
-    ln -fns "${upstream_dir}/puavo-webfilter" /usr/local/sbin/puavo-webfilter
+    configure)
+	rm -r /usr/local/sbin/puavo-webfilter || true
+    cp  ./puavo-webfilter /usr/local/sbin/puavo-webfilter
     cat <<EOF > /etc/systemd/system/puavo-webfilter.service
 [Unit]
 Description=Puavo Web-Filter 
@@ -29,7 +34,6 @@ EOF
     ;;
 	
   unconfigure)
-      upstream_dir=$1
       rm -f /usr/local/sbin/puavo-webfilter
       rm -f /etc/systemd/system/puavo-webfilter.service
     ;;

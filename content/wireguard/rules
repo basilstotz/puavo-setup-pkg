@@ -3,20 +3,20 @@
 set -eu
 
 command=$1
-shift
+upstream_dir=$2
+
+cd "${upstream_dir}"
 
 
 
 case "${command}" in
   configure)
-    upstream_dir=$1
-    ln -fns "${upstream_dir}/puavo-webfilter" /usr/local/sbin/puavo-webfilter  
-    ln -fns "${upstream_dir}/puavo-webfilter.service" /etc/systemd/system/puavo-webfilter.service
+    cp ./puavo-webfilter /usr/local/sbin/puavo-webfilter  
+    cp ./puavo-webfilter.service /etc/systemd/system/puavo-webfilter.service
     systemctl enable puavo-webfilter.service
     ;;
 	
   unconfigure)
-      upstream_dir=$1
     rm -f /usr/local/sbin/puavo-webfilter  
     rm -f /etc/systemd/system/puavo-webfilter.service
     ;;

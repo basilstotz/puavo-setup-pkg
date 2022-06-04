@@ -3,22 +3,21 @@
 set -eu
 
 command=$1
-shift
-
+upstream_dir=$2
+cd "$upstream_dir"
 
 case "${command}" in
   configure)
-      upstream_dir=$1
-      for B in "${upstream_dir}/bin/*.sh"; do
+      for B in ./bin/*.sh; do
 	  if test -x $B; then
-	      echo "executing $(basename $B)"
+	      echo "info:   running $(basename $B)"
 	      $B
 	  fi
       done
     ;;
 	
   unconfigure)
-      upstream_dir=$1
+
     ;;
     
   *)

@@ -3,18 +3,20 @@
 set -eu
 
 command=$1
-shift
+upstream_dir=$2
+
+cd "${upstream_dir}"
+
 
 
 case "${command}" in
   configure)
-    upstream_dir=$1
-    ln -fns "${upstream_dir}/tuxpaint-folder.sh" /etc/profile.d/tuxpaint-folder.sh 
-    ln -fns "${upstream_dir}/tuxpaint.desktop" /usr/share/applications/tuxpaint.desktop 
+    ln -fns ./tuxpaint-folder.sh /etc/profile.d/tuxpaint-folder.sh 
+    ln -fns ./tuxpaint.desktop /usr/share/applications/tuxpaint.desktop 
     ;;
 	
   unconfigure)
-      upstream_dir=$1
+
     ;;
     
   *)
