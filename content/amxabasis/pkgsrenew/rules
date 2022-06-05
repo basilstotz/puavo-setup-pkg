@@ -7,12 +7,13 @@ upstream_dir=$2
 
 cd "${upstream_dir}"
 
+m=$(realpath $2)
 
 PFAD="usr/share/gnome-shell/extensions"
 
 case "${command}" in
   configure)
-    ln -fns ./puavo-pkg-renew /usr/local/sbin/puavo-pkg-renew
+    ln -fns $m/puavo-pkg-renew /usr/local/sbin/puavo-pkg-renew
 
     cat <<EOF > /etc/systemd/system/puavo-pkg-renew.service
 [Unit]

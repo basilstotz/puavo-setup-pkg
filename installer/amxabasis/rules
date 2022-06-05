@@ -9,13 +9,15 @@ case "${command}" in
     configure|unconfigure)
 	upstream_dir=$1
 
-	for rules in $(ls $upstream_dir/*/rules); do
+	echo "info: === amxabasis ==="
+	for rules in $(ls $upstream_dir/amxabasis/*/rules); do
 	    if test -x $rules; then
 		name=$(basename $(dirname $rules))
-		echo "$command $name"
-		$rules $command $upstream_dir/$name
+		echo "info: $command $name"
+		$rules $command $(realpath $upstream_dir/amxabasis/$name)
 	    fi
 	done
+	echo "info: ================="
 	;;
     
     unpack)

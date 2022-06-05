@@ -6,6 +6,10 @@ test "$HOSTTYPE" = "bootserver" && exit 0
 
 echo "setting up webfilter"
 
+
+#################### hosts ###########################
+
+
 if ! test -f /etc/hosts.ori; then cp /etc/hosts /etc/hosts.ori; fi
 
 cat /etc/hosts.ori > /etc/hosts.tmp
@@ -56,24 +60,55 @@ if ! test  "$(puavo-conf puavo.webfilter.safesearch 2>/dev/null)" = "false"; the
 EOF
 fi
 
-if test  "$(puavo-conf puavo.webfilter.safetube 2>/dev/null)" = "true"; then
+SAFETUBE=$(puavo-conf puavo.webfilter.safetube 2>/dev/null)
+
+case "$SAFETUBE" in
+    *strikt|true)
+	IP="216.239.38.120"
+    ;;
+    moderate)
+	IP="216.239.38.119"
+    ;;
+    *)
+	IP=""
+    ;;
+esac
+ 
+if test -n "$IP"; then
     cat <<EOF >> /etc/hosts.tmp
 #
+#restrict.youtube.com has address 216.239.38.120
+#restrictmoderate.youtube.com has address 216.239.38.119
+# war 78.41.204.29
 # force youtube strikt
-78.41.204.29 www.youtube.com
-78.41.204.29 m.youtube.com
-78.41.204.29 youtubei.googleapis.com
-78.41.204.29 youtube.googleapis.com
-78.41.204.29 www.youtube-nocookie.com
+$IP www.youtube.com
+$IP m.youtube.com
+$IP youtubei.googleapis.com
+$IP youtube.googleapis.com
+$IP www.youtube-nocookie.com
 EOF
 fi
-
 
 mv /etc/hosts.tmp /etc/hosts
 
 
+#################### resolv.conf ###########################
+
+#do not activate in school
+
+#only on laptops
 test "$HOSTTYPE" = "laptop" || exit 0
+# with puavobox exit
 test -z "$(/usr/lib/puavo-ltsp-client/lookup-image-server-by-dns)" || exit 0
+#exclude schoolnet
+GATEWAY=$(ip route |grep default|cut -d" " -f3)
+SCHOOLNET=$(puavo-conf puavo.webfilter.schoolnet 2>/dev/null|cut -d/ -f1)
+if test -n "$SCHOOLNET";then
+    if test "$SCHOOLNET" = "$GATEWAY"; then
+	exit 0
+    fi
+fi
+
 
 PROVIDER="$(puavo-conf puavo.webfilter.dnsprovider 2>/dev/null)"
 test -n "$PROVIDER" || exit 0 
@@ -95,7 +130,7 @@ case "$PROVIDER" in
     ;;    
     google)
 	DNS1="8.8.8.8"
-	DNS2="4.4.4.4"
+	DNS2="8.8.4.4"
     ;;
     quad9)
 	DNS1="9.9.9.9"
@@ -121,7 +156,7 @@ case "$PROVIDER" in
 	DNS1="94.140.14.14"
 	DNS2="94.140.15.15"
     ;;
-    adguard-full)
+    adguard-family)
 	DNS1="94.140.14.15"
 	DNS2="94.140.15.16"
     ;;
@@ -129,7 +164,7 @@ case "$PROVIDER" in
 	DNS1="208.67.222.222"
 	DNS2="208.67.220.220"
     ;;
-    opendns-family*)
+    opendns-family)
 	DNS1="208.67.222.123"
 	DNS2="208.67.220.123"
     ;;

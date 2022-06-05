@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+upstream_dir=$2
+
+cd "${upstream_dir}"
+
+m=$(realpath $2)
+
+case "${command}" in
+  configure)
+    cp $m/amxa-wireguard /usr/local/sbin/amxa-wireguard  
+    cp $m/amxa-wireguard.service /etc/systemd/system/amxa-wireguard.service
+    systemctl enable amxa-wireguard.service
+    ;;
+	
+  unconfigure)
+    rm -f /usr/local/sbin/amxa-wireguard  
+    rm -f /etc/systemd/system/amxa-wireguard.service
+    ;;
+    
+  *)
+    ;;
+esac
+

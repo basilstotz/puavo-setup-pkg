@@ -5,18 +5,20 @@ set -eu
 command=$1
 upstream_dir=$2
 
-cd "$upstream_dir"
+
+m=$(realpath $2)
 
 case "${command}" in
   configure)
-      for p in ./profile.d/*.sh; do
+      for p in $m/profile.d/*.sh; do
+	  #echo $p
 	  ln -fns $p /etc/profile.d/$(basename $p)
-	  echo "info:   installing $(basename $p)"
+	  echo "info:   $(basename $p)"
       done
     ;;
 	
   unconfigure)
-      for p in ./profile.d/*.sh; do
+      for p in $m/profile.d/*.sh; do
 	  rm -f /etc/profile.d/$(basename $p)
       done
     ;;

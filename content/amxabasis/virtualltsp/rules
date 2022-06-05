@@ -6,14 +6,14 @@ command=$1
 upstream_dir=$2
 
 cd "$upstream_dir"
-
+m=$(realpath $2)
 
 case "${command}" in
   configure)
-    ln -fns ./tree/etc/avahi/avahi-daemon.conf /etc/avahi/avahi-daemon.conf 
-    ln -fns ./tree/usr/local/sbin/puavo-virtualltsp-client /usr/local/sbin/puavo-virtualltsp-client
-    ln -fns ./tree/usr/local/bin/puavo-find-puavobox /usr/local/bin/puavo-find-puavobox 
-    cp ./tree/etc/systemd/system/puavo-virtualltsp-client.service /etc/systemd/system/puavo-virtualltsp-client.service 
+    ln -fns $m/tree/etc/avahi/avahi-daemon.conf /etc/avahi/avahi-daemon.conf 
+    ln -fns $m/tree/usr/local/sbin/puavo-virtualltsp-client /usr/local/sbin/puavo-virtualltsp-client
+    ln -fns $m/tree/usr/local/bin/puavo-find-puavobox /usr/local/bin/puavo-find-puavobox 
+    cp $m/tree/etc/systemd/system/puavo-virtualltsp-client.service /etc/systemd/system/puavo-virtualltsp-client.service 
     systemctl enable puavo-virtualltsp-client.service
     ;;
 	

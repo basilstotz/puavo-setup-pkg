@@ -7,12 +7,12 @@ upstream_dir=$2
 
 cd "${upstream_dir}"
 
-
+m=$(realpath $2)
 
 case "${command}" in
   configure)
-    ln -fns ./tuxpaint-folder.sh /etc/profile.d/tuxpaint-folder.sh 
-    ln -fns ./tuxpaint.desktop /usr/share/applications/tuxpaint.desktop 
+    ln -fns $m/profile.d/tuxpaint-folder.sh /etc/profile.d/tuxpaint-folder.sh 
+    ln -fns $m/tuxpaint.desktop /usr/share/applications/tuxpaint.desktop 
     ;;
 	
   unconfigure)

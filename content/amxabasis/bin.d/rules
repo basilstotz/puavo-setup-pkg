@@ -6,11 +6,13 @@ command=$1
 upstream_dir=$2
 cd "$upstream_dir"
 
+m=$(realpath $2)
+
 case "${command}" in
   configure)
-      for B in ./bin/*.sh; do
+      for B in $m/bin/*.sh; do
 	  if test -x $B; then
-	      echo "info:   running $(basename $B)"
+	      echo "info:   $(basename $B)"
 	      $B
 	  fi
       done

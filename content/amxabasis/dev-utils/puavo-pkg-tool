@@ -10,6 +10,10 @@ images_www="https://images.amxa.ch"
 gnupg="~/.gnupg/"
 
 
+##############################################################################################
+#############             helper functions (no uploads!) #####################################
+##############################################################################################
+
 init(){
     #pwd
     #echo $basename
@@ -268,6 +272,22 @@ installed(){
     fi
 }
 
+show(){
+echo
+content $1
+echo
+version $1
+rules $1
+upstream $1
+distfiles $1
+echo
+compare "$1" "$2" 
+echo
+puavoconf $1
+installed $1
+}
+
+
 
 if test -z "$1" -o "$1" = "--help"; then
     echo "usage: $(basename $0) installer|installer.tar.gz [opts]"
@@ -281,6 +301,9 @@ if test -z "$1" -o "$1" = "--help"; then
     exit 1
 fi
 
+############################################################################################
+##########################                 main                   ##########################
+############################################################################################
 
 #global vars
 upstream_shasum=""
@@ -323,23 +346,8 @@ else
     fi
 fi
 
-show(){
-echo
-content $1
-echo
-version $1
-rules $1
-upstream $1
-distfiles $1
-echo
-compare "$1" "$2" 
-echo
-puavoconf $1
-installed $1
-}
 
-
-
+#show was here
 
 command="$2"
 url="$3"
@@ -362,7 +370,9 @@ case $command in
     distfile)
 	upstream $first
 	if $passed; then
+	    ##########################################
 	    scp $upstream_name $images_ssh/distfiles/.
+	    ##########################################
 	fi	
 	;;
     update)
@@ -372,7 +382,9 @@ case $command in
         fi
         upstream $first shasum	
         if $passed; then
-  	  scp $upstream_name $images_ssh/distfiles/.
+	    ##########################################
+  	    scp $upstream_name $images_ssh/distfiles/.
+	    ##########################################
         fi
 	;;
     content)
@@ -383,19 +395,42 @@ case $command in
 	    tar -c -z -f ../installer/$basename.tgz $basename
 	    ret=$?
 	    cd $pwd
+
+	    pwd
+	    ls
+	    echo $1 $2 $3 $4
+            if  test "$3" = "production";then
+		name=$basename.tgz
+	    else
+		name=$basename-dev.tgz
+		mv $basename.tgz $name
+		echo
+		echo "info: Devel mode. Name is \"$name\". Use \"production\" as 3rd param to take the real name"
+		echo
+	    fi
+	    
 	    if true; then
-		if scp $basename.tgz $content_ssh/.; then
-		    echo "$content_www/$basename.tgz" > $basename/upstream_pack_url
-	            echo "info: update upstream_pack_url"	    
-	            echo "info: uploaded $basename.tgz sucessfully"	    
+		#########################################
+		if scp $name $content_ssh/.; then
+		    #########################################
+		    if  ! test "$3" = "production";then
+   		       shasum=$(sha384sum $name|cut -d\  -f1)
+		       echo $shasum > $basename/upstream_pack_sha384sum
+		    fi
+		    echo "$content_www/$name" > $basename/upstream_pack_url
+	            echo "info: updated upstream_pack_url"	    
+	            echo "info: uploaded $name sucessfully"
+		    make
 	        else
-		    echo "error: could not uplaod $basename.tgz"
+		    echo "error: could not uplaod $name"
 		    exit 1
 		fi
 	    else
-		echo "error: could not make $basename.tgz"
+		echo "error: could not make $name"
 		exit 1
 	    fi
+
+	    
 	else
 	    echo "error: ../content/$basename not found"
 	    exit 1
@@ -410,8 +445,11 @@ case $command in
 	# gnupg="~/.gnupg/"
         pwd
 	make
-	./puavo-pkg-update-repository . ./repo  ~/.gnupg 
+	./puavo-pkg-update-repository . ./repo  ~/.gnupg
+	#################### ok #######################
 	scp -r ./repo/$basename $images_ssh/puavo-pkg/.
+	###############################################
+	
 	#if ! $?;then
 	#    echo "error: could not uplaod package $basename to image server"
 	#    exit 1

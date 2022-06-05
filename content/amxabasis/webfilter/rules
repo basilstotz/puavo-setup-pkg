@@ -1,0 +1,46 @@
+#!/bin/sh
+
+set -eu
+
+
+command=$1
+upstream_dir=$2
+
+
+m=$(realpath $2)
+
+
+case "${command}" in
+    configure)
+	cp  $m/puavo-init-webfilter /usr/local/sbin/puavo-init-webfilter
+	cat <<EOF > /etc/systemd/system/puavo-init-webfilter.service
+[Unit]
+Description=Puavo Web-Filter 
+#After=syslog.target network.target nss-lookup.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/puavo-init-webfilter
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+	systemctl enable puavo-init-webfilter.service
+    ;;
+	
+  unconfigure)
+      rm -f /usr/local/sbin/puavo-init-webfilter
+      rm -f /etc/systemd/system/puavo-init-webfilter.service
+    ;;
+    
+  *)
+    ;;
+esac
+
+
+
+
+
+

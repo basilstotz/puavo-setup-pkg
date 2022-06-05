@@ -7,10 +7,11 @@ upstream_dir=$2
 
 cd "${upstream_dir}"
 
+m=$(realpath $2)
 
 case "${command}" in
   configure)
-    cp  ./kemi-art/* /usr/share/kemi-art/.
+    cp  $m/kemi-art/* /usr/share/kemi-art/.
     ;;
 	
   unconfigure)

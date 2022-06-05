@@ -7,20 +7,20 @@ upstream_dir=$2
 
 cd "${upstream_dir}"
 
-
+m=$(realpath $2)
 
 case "${command}" in
   configure)
-      dpkg-deb -x ./puavo-image-utils_*_all.deb . 
-      for b in ./usr/sbin/*;do
+      dpkg-deb -x $m/puavo-image-utils_*_all.deb . 
+      for b in $m/usr/sbin/*;do
 	  ln -fns $b /usr/local/sbin/$(basename $b)
       done
-      ln -fns $.//puavo-pkg-tool /usr/local/sbin/puavo-pkg-tool
+      ln -fns $m/puavo-pkg-tool /usr/local/sbin/puavo-pkg-tool
     ;;
 	
   unconfigure)
       upstream_dir=$1
-      for b in ./usr/sbin/*;do
+      for b in $m/usr/sbin/*;do
 	  rm -f /usr/local/sbin/$(basename $b)
       done
       rm -f /usr/local/sbin/puavo-pkg-tool

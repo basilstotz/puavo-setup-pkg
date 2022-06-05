@@ -18,6 +18,7 @@ get_my_address(){
 
 
 	if test -n "answer"; then
+	    #echo $answer
 	    erfolg=true
             my_address=$(echo $answer|cut -d" " -f1)
             subnetmask=$(echo $answer|cut -d" " -f2)
@@ -70,45 +71,61 @@ test -n "$my_address" || exit 1
 
 link_down
 
-#echo "configure...."
+echo "configure...."
+echo ip link add dev $device type wireguard;
 ip link add dev $device type wireguard;
-case $skope; in
+case "$skope" in
     none)
+	echo ip address add dev $device $my_address peer $server_address
 	ip address add dev $device $my_address peer $server_address
-	allowedips=$serverip/32
+	allowedips=$server_address/32
 	;;
     school)
+	echo ip address add dev $device $my_address/$subnetmask
 	ip address add dev $device $my_address/$subnetmask
 	allowedips=$(ipcalc $my_address/$subnetmask|grep Network|xargs|cut -d" " -f2)\
 	;;
     all)
+	echo ip address add dev $device $my_address/$netmask
 	ip address add dev $device $my_address/$netmask
-	allowdeips=$(ipcalc $my_address/$netmask|grep Network|xargs|cut -d" " -f2)\
+	allowedips=$(ipcalc $my_address/$netmask|grep Network|xargs|cut -d" " -f2)\
 	;;
     *)
 	exit 1
 	;;
 esac
- 
+
+echo ip link set multicast on dev $device;
 ip link set multicast on dev $device;
 
 # maybe: private-key <(echo "$privatekey")
 
+echo wg set $device\
+   private-key /tmp/private\
+   peer $publickey\
+   preshared-key /tmp/preshared\
+   endpoint $endpoint\
+   allowed-ips $allowedips\
+   persistent-keepalive 25
+
+
 wg set $device\
    private-key /tmp/private\
-   preshared-key /tmp/preshared\
    peer $publickey\
+   preshared-key /tmp/preshared\
    endpoint $endpoint\
-   allowed-ips $allowdips\
+   allowed-ips $allowedips\
    persistent-keepalive 25
+
 
 rm /tmp/private
 rm /tmp/preshared
 
-ip link set $device up; 
+echo ip link set $device up;
+ip link set $device up
 #ip route add $allowedips dev $device;
 
-echo "link is up"
+echo "... link is up"
 
 
 exit 0

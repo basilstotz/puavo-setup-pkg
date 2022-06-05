@@ -7,15 +7,15 @@ upstream_dir=$2
 
 cd "${upstream_dir}"
 
-
+m=$(realpath $2)
 
 PFAD="usr/share/gnome-shell/extensions"
 
 case "${command}" in
   configure)
-    ln -fns ./setup-gnome-touch.sh /etc/profile.d/setup-gnome-touch.sh
+    ln -fns $m/setup-gnome-touch.sh /etc/profile.d/setup-gnome-touch.sh
     test -d /$PFAD/bigtouch-ux@puavo.org && rm -rf /$PFAD/bigtouch-ux@puavo.org 
-    ln -fns ./bigtouch-ux@puavo.org /$PFAD/bigtouch-ux@puavo.org 
+    ln -fns $m/bigtouch-ux@puavo.org /$PFAD/bigtouch-ux@puavo.org 
     ;;
 	
   unconfigure)
