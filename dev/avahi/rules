@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+upstream_dir=$2
+
+cd "$upstream_dir"
+m=$(realpath $2)
+
+case "${command}" in
+    configure)
+	ln -fns $m/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
+        ln -fns $m/puavo-make-client-avahi-service /usr/local/sbin/puavo-make-client-avahi-service
+        cp $m/puavo-client-avahi.service /etc/systemd/system/puavo-client-avahi.service 
+        systemctl enable puavo-client-avahi.service 
+    ;;	
+
+	
+  unconfigure)
+        rm -f /usr/local/sbin/puavo-make-client-avahi-service
+        rm -f /etc/systemd/system/puavo-client-avahi.service
+        systemctl disable puavo-client-avahi.service 
+    ;;
+    
+  *)
+    ;;
+esac

@@ -1,0 +1,11 @@
+[Unit]
+Description=Puavo Client Api
+#After=syslog.target network.target nss-lookup.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/puavo-clientapi
+
+
+[Install]
+WantedBy=multi-user.target

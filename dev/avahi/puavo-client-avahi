@@ -1,0 +1,37 @@
+#!/bin/sh
+
+
+IMAGE=$(cat /etc/puavo-image/name)
+BOOTTIME=$(date +%s)
+HOSTTYPE=$(puavo-conf puavo.hosttype)
+case $HOSTTYPE in
+    laptop|bootserver|wirelessaccesspoint)
+	ANS=$(cat /images/image_update.stats|xargs)
+	IMG=$(echo $ANS|cut -d" " -f2)
+	PHASE=$(echo $ANS|cut -d" " -f4)
+	PROGRESS=$(echo $ANS|cut -d" " -f6)
+	UPDATE="$IMG:$PHASE:$PROGRESS"
+	;;
+    *)
+	UPDATE="$IMAGE:finished:100"
+	;;
+esac
+
+
+cat <<EOF > /etc/avahi/services/client.service
+<?xml version="1.0" standalone='no'?>
+ <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+ <service-group>
+   <name replace-wildcards="no">puavo-$HOSTTYPE</name>
+   <service>
+     <type>_ssh._tcp</type>
+     <port>22</port>
+     <txt-record>image=$IMAGE</txt-record>
+     <txt-record>update=$UPDATE</txt-record>
+     <txt-record>boottime=$BOOTIME</txt-record>
+   </service>
+ </service-group>
+EOF
+
+systemctl restart avahi-daemon.service
+

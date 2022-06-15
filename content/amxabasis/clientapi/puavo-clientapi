@@ -1,0 +1,30 @@
+#!/bin/sh
+
+if test "$(puavo-conf puavo.clientapi.enable 2>/dev/null)" = "true"; then
+    HOSTTYPE="$(puavo-conf puavo.hosttype)"
+    case "$HOSTTYPE" in
+	bootserver)
+	    mkdir -p /var/log/clientapi
+	    touch /var/log/clientapi/clients.json
+	    if ! test -f /var/log/clientapi/updateinfo.json; then
+		echo "{}" > /var/log/clientapi/updateinfo.json
+	    fi
+	    echo "info: start server ..."
+	    cd /opt/clientapi/
+	    node server.js
+	    ;;
+	laptop|fatclient)
+	    echo "info: start client ..."
+	    cd /opt/clientapi
+	    node client.js
+	    ;;
+	*)
+	    echo "warning: unknown hosttype. sleeping ..."
+	    sleep infinity
+	    ;;
+    esac
+else
+    echo "info: not enabled. sleeping ..."
+    sleep infinity
+fi
+

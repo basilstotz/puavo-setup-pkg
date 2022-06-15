@@ -6,12 +6,14 @@ command=$1
 upstream_dir=$2
 
 
-m=$(realpath $2)
+#m=$(realpath $2)
+
+m=$(dirname $0)
+
 
 case "${command}" in
   configure)
       for p in $m/profile.d/*.sh; do
-	  #echo $p
 	  ln -fns $p /etc/profile.d/$(basename $p)
 	  echo "info:   $(basename $p)"
       done

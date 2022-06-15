@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# =;eth0;IPv4;puavo;SSH-Fernzugriff;local;puavo-builder.local;192.168.1.112;22;"update_status=download 80" "hosttype=laptop"
+# 1 2    3    4     5               6     7                   8             9  10
+
+
+
+avahi-browse -artp 2> /dev/null| while read -r line; do
+    
+    TAG=$(echo $line|cut -d";" -f4)
+    OK=$(echo $line|cut -d";" -f1)
+    if test "$TAG" = "puavo" -a "$OK" = "="; then
+
+	
+	NIC=$(echo $line|cut -d";" -f2)
+	DOMAIN=$(echo $line|cut -d";" -f6)
+	HOST=$(echo $line|cut -d";" -f7)
+	HOST=$(basename $HOST .$DOMAIN)
+	IP=$(echo $line|cut -d";" -f8)
+	TEXT=$(echo $line|cut -d";" -f10)
+
+	echo
+	echo "     host:\t$HOST"
+	echo "      nic:\t$NIC"
+	echo "   domain:\t$DOMAIN"
+	echo "       ip:\t$IP"
+
+	CNT=1
+	FRAG=$(echo $TEXT|cut -d" " -f$CNT)
+	until test -z "$FRAG"; do
+            FRAG=$(echo $FRAG|sed -e 's/"//g')	    
+	    echo " $(echo $FRAG|cut -d= -f1):\t$(echo $FRAG|cut -d= -f2)" 
+	    CNT=$(( CNT + 1))
+	    FRAG=$(echo $TEXT|cut -d" " -f$CNT)
+	done
+
+	echo
+#	echo "$HOST\t$NIC\t$IP\t$TEXT"
+
+#	echo "  text: $TEXT"
+#	echo
+ 
+    fi
+    
+done 

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+upstream_dir=$2
+
+cd "$upstream_dir"
+m=$(realpath $2)
+
+case "${command}" in
+  configure)
+    ln -fns $m/tree/usr/local/sbin/puavo-virtualltsp-client /usr/local/sbin/puavo-virtualltsp-client
+    ln -fns $m/tree/usr/local/bin/puavo-find-puavobox /usr/local/bin/puavo-find-puavobox 
+    cp $m/tree/etc/systemd/system/puavo-virtualltsp-client.service /etc/systemd/system/puavo-virtualltsp-client.service 
+    systemctl enable puavo-virtualltsp-client.service
+    ;;
+	
+  unconfigure)
+    rm -f /usr/local/sbin/puavo-virtualltsp-client
+    rm -f /usr/local/bin/puavo-find-puavobox
+    rm -f /etc/systemd/system/puavo-virtualltsp-client.service 
+    ;;
+    
+  *)
+    ;;
+esac

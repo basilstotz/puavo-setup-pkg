@@ -15,6 +15,7 @@ if ! test -f /etc/hosts.ori; then cp /etc/hosts /etc/hosts.ori; fi
 cat /etc/hosts.ori > /etc/hosts.tmp
 
 if ! test  "$(puavo-conf puavo.webfilter.safesearch 2>/dev/null)" = "false"; then
+    echo "set safesearch"
     cat << EOF >> /etc/hosts.tmp
 #
 # force safesaerch for google
@@ -75,6 +76,7 @@ case "$SAFETUBE" in
 esac
  
 if test -n "$IP"; then
+    echo "set youtube strikt"
     cat <<EOF >> /etc/hosts.tmp
 #
 #restrict.youtube.com has address 216.239.38.120
@@ -94,26 +96,48 @@ mv /etc/hosts.tmp /etc/hosts
 
 #################### resolv.conf ###########################
 
+if ! test "$(puavo-conf puavo.webfilter.enable 2>/dev/null)" = "true";then
+    echo "dnsprovider not enabled,exit"
+    exit 0
+fi
+
+
 #do not activate in school
 
 #only on laptops
-test "$HOSTTYPE" = "laptop" || exit 0
+if test "$HOSTTYPE" != "laptop";then
+    echo "not laptop, exit"
+    exit 0
+fi
+
+echo "ok, laptop"
 # with puavobox exit
-test -z "$(/usr/lib/puavo-ltsp-client/lookup-image-server-by-dns)" || exit 0
+if test -n "$(/usr/lib/puavo-ltsp-client/lookup-image-server-by-dns)"; then
+    echo "see puavobox, exit"
+fi
+
 #exclude schoolnet
 GATEWAY=$(ip route |grep default|cut -d" " -f3)
 SCHOOLNET=$(puavo-conf puavo.webfilter.schoolnet 2>/dev/null|cut -d/ -f1)
 if test -n "$SCHOOLNET";then
     if test "$SCHOOLNET" = "$GATEWAY"; then
+	echo "see schoolnet, exit"
 	exit 0
     fi
 fi
 
 
 PROVIDER="$(puavo-conf puavo.webfilter.dnsprovider 2>/dev/null)"
-test -n "$PROVIDER" || exit 0 
+
+if test "$PROVIDER" = "none";then
+    echo "provider set to none,exit"
+    exit 0
+fi
 
 
+test -n "$PROVIDER" || PROVIDER="cloudflare-family" 
+
+echo "set dnsprovider $PROVIDER"
 
 case "$PROVIDER" in
     cloudflare)
@@ -148,7 +172,7 @@ case "$PROVIDER" in
 	DNS1="185.228.168.10"
 	DNS2="185.228.169.11"
     ;;
-    adguard-nonfiltering)
+    adguard-nofilter|adguard-nonfiltering)
 	DNS1="94.140.14.140"
 	DNS2="94.140.14.141"
     ;;
@@ -183,6 +207,7 @@ echo "nameserver $DNS1"          >>  /etc/resolv.conf
 #echo "nameserver $DNS2"          >> /etc/resolv.conf
 echo "$OLD"                      >> /etc/resolv.conf
 
+echo "done" 
  
 exit 0
 

@@ -9,11 +9,11 @@ cd "${upstream_dir}"
 
 m=$(realpath $2)
 
-PFAD="usr/share/gnome-shell/extensions"
+# missing: do not install, when in image.
 
 case "${command}" in
   configure)
-    ln -fns $m/puavo-pkg-renew /usr/local/sbin/puavo-pkg-renew
+    cp $m/puavo-pkg-renew /usr/local/sbin/puavo-pkg-renew
 
     cat <<EOF > /etc/systemd/system/puavo-pkg-renew.service
 [Unit]
@@ -32,10 +32,6 @@ EOF
     ;;
 	
   unconfigure)
-      rm -f /usr/local/sbin/puavo-pkg-renew
-      rm -f /etc/systemd/system/puavo-pkg-renew.service
-      systemctl stop puavo-pkg-renew.service
-      
       ;;
     
   *)

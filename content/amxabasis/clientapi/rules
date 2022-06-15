@@ -1,0 +1,36 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+upstream_dir=$2
+
+cd "${upstream_dir}"
+
+m=$(realpath $2)
+
+
+case "${command}" in
+    configure)
+	ln -fns $m/clientapi /opt/clientspi
+        ln -fns $m/puavo-clientapi /usr/local/sbin/puavo-clientapi
+	ln -fns $m/puavo-clientapi.service /etc/systemd/system/puavo-clientapi.service
+	systemctl enable puavo-clientapi.service
+    ;;
+	
+    unconfigure)
+	rm -f /opt/clientapi
+        rm -f /usr/local/sbin/puavo-clientapi
+	rm -f /etc/systemd/system/puavo-clientapi.service
+	#if test "$(systemctl is-active puavo-clientapi.service)" = "active"; then
+	#    systemctl stop puavo-clientapi.service
+	#fi  
+    ;;
+  
+    
+  *)
+    ;;
+esac
+
+
+
