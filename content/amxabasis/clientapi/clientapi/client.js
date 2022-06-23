@@ -1,67 +1,12 @@
 const io  = require("socket.io-client");
 const fs = require('fs');
-const { execSync } = require('child_process')
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 function debug(text){
     if(false)console.log(text);
 }
-
-
-//blocking
-function read(name){
-    return fs.readFileSync(name,{encoding:'utf8', flag:'r'});
-}
-
-function shell(command){
-    let args= [];
-    //console.log(args);
-    let opts= { encoding: 'utf8' };
-    return execSync(command, args, opts);
-}
-
-
-function getHostType(){
-    return shell('puavo-conf puavo.hosttype 2>/dev/null').replace(/\n/g,'');
-}
-
-function getImageName(){
-    return read('/etc/puavo-image/name').replace(/\n/g,'');
-}
-
-function getRelease(){
-    return read('/etc/puavo-image/release').replace(/\n/g,'');
-}
-
-function getHostname(){
-    let hn=shell('hostname').replace(/\n/g,'');
-    echo 
-    return 
-}
-
-
-/*
-function getUsers(){
-    return shell('who').replace(/\n/g,'');
-}
-
-function shutdown(){
-    shell('shutdown --now');
-}
-*/
-
-function lookupImageServer(){
-    let ans=shell('/usr/lib/puavo-ltsp-client/lookup-image-server-by-dns').replace(/\n/g,'');;
-    if(ans==''){
-	return '';
-    }else{
-	let arr=ans.split(':');
-	return arr[0];
-    }
-}
-
-//nonblocking
 
 
 function doStatusUpdate(){
@@ -87,8 +32,8 @@ function doStatusUpdate(){
 		    {
 			host: hostName,
 			image: {
-		 	    release: release,
-			    name: imageName
+		 	    release: releaseName,
+			    name: imageName,
 			},
 			update: status
 		    };
@@ -100,78 +45,60 @@ function doStatusUpdate(){
     }
 }
 
-
 function startStatusUpdate(){
     setImmediate(doStatusUpdate);
     timerId=setInterval(doStatusUpdate,interval);
-    debug('connect');
+    debug('info: connect');
 }
 
 function stopStatusUpdate(){
     clearInterval(timerId);
-    debug('disconnect');
+    debug('info: disconnect');
 }
-
-function sleepForever(){
-    setTimeout(sleepForever,3600000);
-}
-
-/*
-function doCommand(data) {
-    if(data.host==hostname){
-	
-        switch(data.command){
-	    
-	    'update':
-	    
-	    shell('puavo-update-client');
-	    break;
-	    
-	    'reboot': 
-	   shell('reboot');
-		'shutdown':
-		shell('shutdown -now');
-	    default:
-	    }
-    }
-}
-*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-//settings
+
 let interval=1*(60*1000);
-let port=3000;
 
 //globals
+let serverUrl;
+
+
 let hostType;
 let hostName;
 let imageName;
-let release;
+let releaseName;
+
 let timerId;
 let socket;
 let oldStatus = {};
 
-let imageServer=lookupImageServer();
-//let imageServer='192.168.1.112';
-if(imageServer!=''){
-    debug('start');
-    hostName = getHostname();
-    hostType = getHostType();
-    if(hostType=='laptop'){
-    	imageName = getImageName();        release = getRelease();
-    }
-    socket=io('ws://'+imageServer+':'+port);    
-    socket.on('connect', () => {
-	socket.volatile.emit('hello', { hostname: hostName, hosttype: HostType } );
-	if(hostType=='laptop')startStatusUpdate()
+
+debug('info: start');
+
+serverUrl=process.argv[2];
+hostName=process.argv[3];
+hostType=process.argv[4];
+imageName=process.argv[5];
+releaseName=process.argv[6];
+
+let startTime= new Date().getTime();
+
+socket=io(serverUrl);    
+
+socket.on('connect', () => {
+    socket.volatile.emit('hello', {
+	hostname: hostName,
+	hosttype: hostType,
+	starttime: startTime,
+	image: imageName,
+	release: releaseName
     });
-    socket.on('disconnect', () => {
-	if(hostType=='laptop')stopStatusUpdate()
-    });
-//    socket.on('command', (data) => { doCommand(data) }); 
-}else{
-    sleepForvever();
-    debug('sleep');
-}
- 
+    if(hostType=='laptop')startStatusUpdate()
+});
+
+socket.on('disconnect', () => {
+    if(hostType=='laptop')stopStatusUpdate()
+});
+

@@ -86,9 +86,11 @@ function updateFiles(){
     writeUpdateUnfo();
 }
 
+/*
 function readDeviceInfo(){
     deviceInfo=filterRestDevices(JSON.parse(read('./devices.json')));
 }
+*/
 
 function cleanupAndExit(){
     server.close( () => {
@@ -103,7 +105,7 @@ function cleanupAndExit(){
 
 readDeviceInfo();
 readUpdateInfo();
-setInterval(writeUpdateInfo, 60000);
+setInterval(updateFiles, 3600*1000);
 
 /*
 readUpdateInfo();
@@ -111,7 +113,7 @@ getDeviceInfo();
 setInterval(updateFiles,3600*1000);
 */
 
-var server = app.listen(process.env.PORT || 3000, listen);
+var server = app.listen(process.argv[2], listen);
 
 process.on('SIGINT', () => {
     console.log('\nSIGINT received. cleanup and exit');

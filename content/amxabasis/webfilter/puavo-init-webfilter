@@ -98,6 +98,10 @@ mv /etc/hosts.tmp /etc/hosts
 
 if ! test "$(puavo-conf puavo.webfilter.enable 2>/dev/null)" = "true";then
     echo "dnsprovider not enabled,exit"
+    if test -f /etc/resolv.conf.ori;then
+	cp /etc/resolv.conf.ori /etc/resolv.conf
+    fi
+    
     exit 0
 fi
 
