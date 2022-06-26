@@ -6,6 +6,6 @@ GenericName=Markdown Editor
 Comment=Markdown Editor
 Keywords=Markdown Editor
 Icon=/usr/share/pixmaps/md-wysiwyg-editor.png
-Exec=/usr/share/bin/webapps https://amxa.ch/md-wysiwyg-editor/index.html
+Exec=/usr/share/bin/webapps https://markdown.amxa.ch
 Terminal=false
 Categories=Education
