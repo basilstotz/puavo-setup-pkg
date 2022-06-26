@@ -61,7 +61,7 @@
     },
     "menu-online-comm": {
       "name": "Online Verbinden",
-      "icon": "/usr/share/pixmaps/qbrowser.png",
+      "icon": "/usr/share/icons/Faenza/apps/64/gwibber.png",
       "programs": [
         "jitsi-meet",
         "amxa-talk",
