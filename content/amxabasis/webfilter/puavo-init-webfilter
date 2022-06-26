@@ -3,6 +3,11 @@
 
 HOSTTYPE="$(puavo-conf puavo.hosttype)"
 test "$HOSTTYPE" = "bootserver" && exit 0
+                                                                                                                                             
+
+DIST=$(cat /etc/puavo-image/name|cut -d- -f4)
+puavo-conf puavo.support.image_changelog_url  http://changelog.opinsys.fi/de/opinsys/$DIST/
+
 
 echo "setting up webfilter"
 
