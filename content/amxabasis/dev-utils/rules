@@ -16,6 +16,8 @@ case "${command}" in
 	  ln -fns $b /usr/local/sbin/$(basename $b)
       done
       ln -fns $m/puavo-pkg-tool /usr/local/sbin/puavo-pkg-tool
+      ln -fns $m/puavo-image-extend /usr/local/sbin/puavo-image-extend
+      ln -fns $m/puavo-image-repository /usr/local/sbin/puavo-image-repository
     ;;
 	
   unconfigure)
@@ -24,6 +26,8 @@ case "${command}" in
 	  rm -f /usr/local/sbin/$(basename $b)
       done
       rm -f /usr/local/sbin/puavo-pkg-tool
+      rm -f /usr/local/sbin/puavo-image-extend
+      rm -f /usr/local/sbin/puavo-image-repository
     ;;
     
   *)
