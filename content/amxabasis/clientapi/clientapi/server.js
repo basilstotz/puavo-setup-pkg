@@ -103,7 +103,7 @@ function cleanupAndExit(){
 
 
 
-readDeviceInfo();
+getDeviceInfo();
 readUpdateInfo();
 setInterval(updateFiles, 3600*1000);
 

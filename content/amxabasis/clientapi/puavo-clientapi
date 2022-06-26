@@ -4,19 +4,16 @@ PORT=3000
 
 if test "$(puavo-conf puavo.clientapi.enable 2>/dev/null)" = "true"; then
 
-    URL="$(puavo-conf puavo.clientapi.url)";
-    if test -z "$URL"; then
+    SERVER="$(puavo-conf puavo.clientapi.server 2>/dev/null)";
+    if test -z "$SERVER"; then
         SERVER="$(/usr/lib/puavo-ltsp-client/lookup-imageserver-by-dns| cut -d: -f1)"
-	if test -n "$SERVER"; then
-	    URL="ws://${SERVER}:${PORT}"
-	fi
     fi
-    
-    if test -n "$URL"; then
+
+    if test -n "$SERVER"; then	
         HOSTTYPE="$(puavo-conf puavo.hosttype)"
 	HOSTNAME="$(hostname)"
 	IMAGE="$(cat /etc/puavo-image/name)"
-	RELEASE="$(cate /etc/puavo-image/release)"
+	RELEASE="$(cat /etc/puavo-image/release|sed -e's/ /+/g')"
 	case "$HOSTTYPE" in
 	    bootserver)
 		mkdir -p /var/log/clientapi
@@ -26,12 +23,12 @@ if test "$(puavo-conf puavo.clientapi.enable 2>/dev/null)" = "true"; then
 		fi
 		echo "info: start server ..."
 		cd /opt/clientapi/
-		node server.js "$PORT"
+		node ./server.js "$PORT"
 		;;
 	    laptop|fatclient)
 		echo "info: start client ..."
 		cd /opt/clientapi
-		node client.js "$URL" "$HOSTNAME" "$HOSTTYPE" "$IMAGE" "$RELEASE" 
+		node ./client.js  "ws://${SERVER}:${PORT}" "$HOSTNAME" "$HOSTTYPE" "$IMAGE" "$RELEASE" 
 		;;
 	    *)
 		echo "info: not running on $HOSTTYPE. sleeping ..."
