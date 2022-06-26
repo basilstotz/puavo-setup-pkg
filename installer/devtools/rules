@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+
+case "${command}" in
+  configure)
+      upstream_dir=$1
+      dpkg-deb -x "$upstream_dir"/devtools/*.deb  "$upstream_dir" 
+      for b in "$upstream_dir"/usr/sbin/*; do
+	  ln -fns $b /usr/local/bin/$(basename $b)
+      done
+    ;;
+	
+  unconfigure)
+      upstream_dir=$1
+      for b in "$upstream_dir"/usr/sbin/*; do
+	  rm -f /usr/local/bin/$(basename $b)
+      done
+      ;;
+  
+  unpack)
+    upstream_pack=$1
+    upstream_dir=$2
+    tar -x -z -f "$upstream_pack" -C "$upstream_dir" || true
+    ;;
+    
+  *)
+    ;;
+esac
