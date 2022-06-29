@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+upstream_dir=$2
+
+cd "${upstream_dir}"
+
+m=$(realpath $2)
+
+case "${command}" in
+    configure)
+      BIN=$(which obs)
+      if ! test -f $BIN.dist; then mv $BIN $BIN.dist; fi
+
+      cat <<'EOF' > $BIN
+#!/bin/sh
+DEVICE=""
+test -n "$(which v4l2loopback-ini)" && v4l2loopback-ini 
+test -n "$(which v4l2loopback-ctl)" && DEVICE="$(v4l2loopback-ctl add -n "OBS-Cam" -x 1)"
+obs.dist
+test -n "$DEVICE" && v4l2loopback-ctl del $DEVICE
+exit
+EOF
+      chmod +x $BIN
+      ;;
+	
+    unconfigure)
+	BIN=$(which obs)
+	rm $BIN
+	mv $BIN.dist $BIN
+    ;;
+    
+  *)
+    ;;
+esac
