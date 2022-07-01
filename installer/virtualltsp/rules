@@ -1,0 +1,30 @@
+#!/bin/sh
+set -eu
+
+command=$1
+shift
+
+case "${command}" in
+  configure)
+    upstream_dir=$1
+    ln -fns $upstream_dir/virtualltsp/puavo-virtualltsp-client /usr/local/sbin/puavo-virtualltsp-client
+    ln -fns $upstream_dir/virtualltsp/puavo-virtualltsp-client.service /etc/systemd/system/puavo-virtualltsp-client.service 
+    systemctl enable puavo-virtualltsp-client.service
+    ;;
+	
+  unconfigure)
+    upstream_dir=$1
+    rm -f /usr/local/sbin/puavo-virtualltsp-client
+    rm -f /etc/systemd/system/puavo-virtualltsp-client.service 
+    ;;
+
+  unpack)
+    upstream_pack=$1
+    upstream_dir=$2
+    tar -x -z -f "$upstream_pack" -C "$upstream_dir" || true
+    ;;
+
+      
+  *)
+    ;;
+esac

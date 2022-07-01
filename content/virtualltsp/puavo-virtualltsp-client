@@ -1,0 +1,66 @@
+#!/bin/bash
+
+
+# only on latops, when puavo.virtualltsp.puavobox is set
+test "$(puavo-conf puavo.virtualltsp.enable)" = "true" || sleep infinity
+test "$(puavo-conf puavo.hosttype)" = "bootserver" && sleep infinity
+puavobox=$(puavo-conf puavo.virtualltsp.puavobox 2>/dev/null)
+test -z "$puavobox" && sleep infinity
+
+echo "info: virtualltsp starting"
+
+while true; do
+    if nm-online -q -t 3600; then
+	if fping -a $puavobox 2>/dev/null >/dev/null && host cups $puavobox 2>/dev/null >/dev/null; then
+	    if ip route | grep -q "10.249.0.0/20";then
+		while host cups $puavobox 2>/dev/null >/dev/null; do
+		    sleep 300
+		done
+	    else
+		echo"info: virtualltsp on"
+		ip route add 10.249.0.0/20 via $puavobox
+		echo "nameserver $puavobox" > /etc/resolv.conf
+	    fi
+	else
+	    if ip route | grep -q "10.249.0.0/20";then
+		echo "info: virtualltsp off"
+		ip route del 10.249.0.0/20 via $puavobox
+	    fi
+	    if grep -q "nameserver $puavobox" /etc/resolv.conf; then
+		echo "nameserver 127.0.0.1" > /etc/resolv.conf
+	    fi
+	fi
+	sleep 300	    	
+    fi
+done
+
+exit 
+
+
+
+
+#nm-online -q -t 3600
+#find_puavobox(){
+#    echo "$(avahi-browse -artpk| grep "=;.*;IPv4;puavo.*bootserver" | cut -d";" -f8|head -n1)"
+#}
+
+
+#case "$puavobox" in
+#    "")
+#	sleep 9999999999999999999999
+#	;;
+#    0.0.0.0)
+#        while test "$puavobox" = "0.0.0.0"; do
+#             $puavobox=$(find_puavobox)
+#             test "$puavobox" = "10.249.15.254" && sleep 999999999999999999999999
+#             sleep 5
+#	done	
+#	;;
+#    *)
+#	;;
+#esac
+
+# is it realy a puavo box?
+#host cups $puavobox 2>&1 >/dev/null || sleep 9999999999999999999999999
+
+#while ip route | grep -v -q default; do sleep 1; done
