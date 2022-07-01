@@ -9,7 +9,8 @@ packagedirs   = amxabasis
 packagedirs  += puavomenu
 packagedirs  += webapps
 packagedirs  += devtools
-
+packagedirs  += virtualltsp
+packagedirs  += clientapi
 
 
 packagefiles = $(patsubst %,%.tar.gz,${packagedirs})
