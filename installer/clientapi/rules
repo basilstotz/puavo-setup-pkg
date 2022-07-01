@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+shift
+
+
+case "${command}" in
+    configure)
+	upstream_dir=$1
+	ln -fns $upstream_dir/clientapi /opt/clientapi
+        ln -fns $upstream_dir/puavo-clientapi /usr/local/sbin/puavo-clientapi
+	ln -fns $upstream_dir/puavo-clientapi.service /etc/systemd/system/puavo-clientapi.service
+	systemctl enable puavo-clientapi.service
+    ;;
+	
+    unconfigure)
+	upstream_dir=$1
+	rm -f /opt/clientapi
+        rm -f /usr/local/sbin/puavo-clientapi
+	rm -f /etc/systemd/system/puavo-clientapi.service
+    ;;
+
+    unpack)
+    upstream_pack=$1
+    upstream_dir=$2
+    tar -x -z -f "$upstream_pack" -C "$upstream_dir" || true
+    ;;
+    
+
+    
+  *)
+    ;;
+esac
+
+
+

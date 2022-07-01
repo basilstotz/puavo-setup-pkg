@@ -1,0 +1,245 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>A Basic HTML5 Template</title>
+  <meta name="description" content="A simple HTML5 Template for new projects.">
+  <meta name="author" content="SitePoint">
+
+  <!---
+  <meta property="og:title" content="A Basic HTML5 Template">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.sitepoint.com/a-basic-html5-template/">
+  <meta property="og:description" content="A simple HTML5 Template for new projects.">
+  <meta property="og:image" content="image.png">
+  
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  
+  <script src="date-and-time.es.js"></script>
+  --->
+<script src="datef.js"></script>
+<script src="multisort.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5.21.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.20.2"></script>
+
+    <style media="screen">
+      /* Add space between Vega-Embed links  */
+      .vega-actions a {
+        margin-right: 5px;
+      }
+    </style>
+
+
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif;}
+table, th, td {
+  border: 1px solid lightgrey;
+  border-collapse: collapse;
+  padding:4px;
+  padding-left:9px;
+  padding-right:9px;
+}
+th { background:grey;color:white }
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+h1 {text-align: center;}
+</style>
+
+</head>
+
+<body>
+  <h1>Laptop Update Status</h1>
+<div class="center">
+  <div id="vis"></div>
+  <div id="vis2"></div>
+</div>
+
+  <p style="position:fixed; top:0px; left:10px;" id="refresh"><p>
+  <div id="uhu" ></div>
+  
+ 
+<script>
+
+var sortKey='host'
+var sortDir='asc'
+
+function ssk(theSortKey){
+    sortKey=theSortKey;
+    if(sortDir=='desc'){sortDir='asc';}else{sortDir='desc';}
+    //console.log('ssk called: '+sortKey+' '+sortDir);
+    hostInfoTable();
+}
+
+function format(image){
+    if(image=="")return "";
+    let arr=image.split('-');
+    return arr[3].concat(' (',arr[4],'-',arr[5],'-',arr[6],')');
+}
+
+
+
+function httpGet(theUrl,theCallback){
+var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function() { 
+      if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+	  theCallback(JSON.parse(xmlHttp.responseText));
+  }
+  xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+  xmlHttp.send(null);
+}
+
+function refresh(){
+    document.getElementById("refresh").innerHTML = "lade Seite neu ...";
+    setTimeout(() => {document.getElementById("refresh").innerHTML = "&nbsp;";},500);
+}
+
+
+function floorDate(timestamp){
+
+    const m=24*60*60*1000;
+    return Math.floor(timestamp/m)*m;
+}
+
+function  hostInfoTable(){
+    refresh();
+    httpGet('hostinfo',(data) => {
+
+	let showFinished=true;
+	let showOffline=true;
+
+	let histo=[];
+	let week=7*24*60*60*1000;
+	let now=new Date().getTime();
+	let filtered=[];
+
+	let maxWeek=28;
+	for(let i=0;i<maxWeek;i++)histo[i]=0;
+	
+	//filter
+	data.forEach( (val) => {
+	    
+	    let index = Math.floor((now - val.time)/week);
+	    if(index>=maxWeek)index=maxWeek-1;
+	    histo[index]++;
+ 
+            	    
+	    val.time=floorDate(val.time);
+	    let doShow=(val.phase!='finished' || showFinished) && (val.online==true|| showOffline)  
+	    if(doShow)filtered.push(val);
+	});
+
+	histoGramm(histo);
+	
+	//sort
+	let orderObj={}
+	orderObj[sortKey]=sortDir;
+	if(sortKey=='image'||sortKey=='time')orderObj['host']='asc';
+	//console.log(JSON.stringify(orderObj));
+	let sorted=multiSort(filtered, orderObj);
+
+	//display
+	let out="<table class='center'>\n";
+	out+="<tr><th onclick=\"ssk('host')\">Host</th><th onclick=\"ssk('time')\">Zeit</th><th onclick=\"ssk('image')\">Image</th>";
+	out+="<th>Online</th><th>Update</th><th>Phase</th><th>Progress</th></tr>\n";
+	sorted.forEach( (val) => {
+	    out+='<tr><td>'+val.host+'</td><td>'+datef('dd.MMM YYYY', val.time+1)+'</td><td>'+format(val.image)+'</td><td>'+val.online+'</td>';
+	    out+='<td>'+format(val.update)+'</td><td>'+val.phase+'</td><td>'+val.progress+'</td></tr>\n';
+	});                                                                                              
+	out+="</table>\n";
+	document.getElementById("uhu").innerHTML = out;
+
+	//console.log(JSON.stringify(histo));
+    }
+)};
+
+hostInfoTable();
+setInterval(hostInfoTable,10000);
+
+  
+</script>
+
+<script>
+  function histoGramm(histo){
+
+      let histo2=[];
+      let val=[];
+      let val2=[];
+      let sum=0;
+      for(let i=0;i<histo.length;i++){
+	  let h=histo[i];
+	  sum+=h;
+	  histo2[i]=sum;
+	  val.push( { a: i, b: h  } );
+      }
+
+      let all=histo2[histo.length-1];
+      for(let i=0;i<histo2.length;i++){
+	  let h=histo2[i]/all;
+	  val2.push( { a: i, b: h } );
+      }
+
+
+
+      
+      // Assign the specification to a local variable vlSpec.
+      var vlSpec = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        data: { values: val },
+        mark: 'bar',
+        encoding: {
+            x: {
+		field: 'a',
+		type: 'quantitative',
+		axis: { title: "Wochen seit letzer Nutzung" }
+	    },
+            y: {
+		field: 'b',
+		type: 'quantitative',
+		axis: { title: 'Anzahl Laptops' }
+            }
+        }
+      };
+
+      // Embed the visualization in the container with id `vis`
+      vegaEmbed('#vis', vlSpec);
+      var vl2Spec = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        data: { values: val2 },
+        mark: 'bar',
+        encoding: {
+            x: {
+		field: 'a',
+		type: 'quantitative',
+		axis: { title: "Wochen seit letzer Nutzung" }
+	    },
+            y: {
+		field: 'b',
+		type: 'quantitative',
+		axis: { title: 'Anzahl Laptops kummulativ' }
+            }
+        }
+      };
+
+      // Embed the visualization in the container with id `vis`
+      vegaEmbed('#vis', vlSpec);
+      vegaEmbed('#vis2', vl2Spec);
+  }
+
+    </script>
+
+</body>
+</html>
+
+
