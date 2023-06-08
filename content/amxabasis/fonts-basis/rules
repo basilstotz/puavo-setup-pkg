@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+upstream_dir=$2
+
+
+#m=$(realpath $2)
+
+m=$(dirname $0)
+
+
+case "${command}" in
+  configure)
+      for p in $m/opentype/*; do
+	  ln -fns $p /usr/share/fonts/opentype/$(basename $p)
+	  echo "info:   install $(basename $p)"
+      done
+      for p in $m/truetype/*; do
+	  ln -fns $p /usr/share/fonts/truetype/$(basename $p)
+	  echo "info:   install $(basename $p)"
+      done
+    ;;
+	
+  unconfigure)
+      for p in $m/opentype/*; do
+	  rm /usr/share/fonts/opentype/$(basename $p)
+	  echo "info:   remove $(basename $p)"
+      done
+      for p in $m/truetype/*; do
+	  rm /usr/share/fonts/truetype/$(basename $p)
+	  echo "info:   remove $(basename $p)"
+      done
+    ;;
+    
+  *)
+    ;;
+esac
