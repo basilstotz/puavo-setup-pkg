@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Discord
+GenericName=Discord
+Comment=""
+Keywords=""
+Icon=/usr/share/pixmaps/discord.png
+Exec=/usr/share/bin/webapps https://discord.com/app
+Terminal=false
+Categories=Education

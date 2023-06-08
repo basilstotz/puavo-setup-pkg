@@ -27,7 +27,7 @@ ExecStart=/usr/local/sbin/puavo-init-webfilter
 WantedBy=multi-user.target
 EOF
 
-	systemctl disable puavo-init-webfilter.service
+	systemctl enable puavo-init-webfilter.service
     ;;
 	
   unconfigure)
