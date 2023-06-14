@@ -1,10 +1,10 @@
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Type=Application
-Name=Discord
-GenericName=Discord
-Comment=""
-Keywords=""
+Name=Discord-Web
+GenericName=Discord-Web
+Comment="messenger"
+Keywords="online;messenger"
 Icon=/usr/share/pixmaps/discord.png
 Exec=/usr/share/bin/webapps https://discord.com/app
 Terminal=false

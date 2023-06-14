@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Threema-Web
+GenericName=Messenger Threema
+Comment=Messenger Threema
+Keywords=messenger;online
+Icon=/usr/share/pixmaps/threema-web.png
+Exec=/usr/share/bin/webapps https://web.threema.ch
+Terminal=false
+Categories=Online

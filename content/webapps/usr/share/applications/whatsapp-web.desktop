@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Whatsapp-Web
+GenericName=Messenger Whatsapp
+Comment=Messenger Whatsapp
+Keywords=messenger;online
+Icon=/usr/share/pixmaps/whatsapp-web.jpg
+Exec=/usr/share/bin/webapps https://web.whatsapp.com
+Terminal=false
+Categories=Online

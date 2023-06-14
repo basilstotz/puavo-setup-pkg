@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Name=Telegram-Web
+GenericName=Messenger Telegram
+Comment=Messenger Telegram
+Keywords=messenger;online
+Icon=/usr/share/pixmaps/telegram-web.png
+Exec=/usr/share/bin/webapps https://web.telegram.org
+Terminal=false
+Categories=Online
