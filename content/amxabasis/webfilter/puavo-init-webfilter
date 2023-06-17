@@ -123,6 +123,7 @@ echo "ok, laptop"
 # with puavobox exit
 if test -n "$(/usr/lib/puavo-ltsp-client/lookup-image-server-by-dns)"; then
     echo "see puavobox, exit"
+    exit 0
 fi
 
 #exclude schoolnet
