@@ -5,7 +5,8 @@ datarootdir = $(prefix)/share
 INSTALL = install
 INSTALL_DATA = $(INSTALL) -m 644
 
-packagedirs   = amxabasis
+packagedirs   = puavoconf
+packagedirs  += amxabasis
 packagedirs  += puavomenu
 packagedirs  += webapps
 packagedirs  += devtools
