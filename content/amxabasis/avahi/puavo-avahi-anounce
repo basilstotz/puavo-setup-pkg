@@ -2,7 +2,9 @@
 
 
 IMAGE=$(cat /etc/puavo-image/name)
-BOOTTIME=$(date +%s)
+#BOOTTIME=$(date +%s)
+BOOTTIME=$(date)
+HOSTNAME=$(hostname)
 HOSTTYPE=$(puavo-conf puavo.hosttype)
 case $HOSTTYPE in
     laptop|bootserver|wirelessaccesspoint)
@@ -22,13 +24,15 @@ cat <<EOF > /etc/avahi/services/client.service
 <?xml version="1.0" standalone='no'?>
  <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
  <service-group>
-   <name replace-wildcards="no">puavo-$HOSTTYPE</name>
+   <name replace-wildcards="no">puavo</name>
    <service>
      <type>_ssh._tcp</type>
      <port>22</port>
+     <txt-record>hostname=$HOSTNAME</txt-record>
+     <txt-record>hosttype=$HOSTTYPE</txt-record>
      <txt-record>image=$IMAGE</txt-record>
      <txt-record>update=$UPDATE</txt-record>
-     <txt-record>boottime=$BOOTIME</txt-record>
+     <txt-record>boottime=$BOOTTIME</txt-record>
    </service>
  </service-group>
 EOF

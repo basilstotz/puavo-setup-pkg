@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -eu
+
+command=$1
+upstream_dir=$2
+
+cd "$upstream_dir"
+m=$(realpath $2)
+
+case "${command}" in
+    configure)
+        ln -fns $m/puavo-avahi-anounce.service /etc/systemd/system/puavo-avahi-anounce.service
+        ln -fns $m/puavo-avahi-anounce /usr/local/sbin/puavo-avahi-anounce
+	ln -fns $m/puavo-avahi-list /usr/local/bin/puavo-avahi-list
+        systemctl enable puavo-avahi-anounce.service 
+    ;;	
+
+	
+  unconfigure)
+        rm -f /usr/local/sbin/puavo-avahi-anounce
+        rm -f /usr/local/bin/puavo-avahi-list
+        rm -f /etc/systemd/system/puavo-avahi-anounce.service
+    ;;
+    
+  *)
+    ;;
+esac

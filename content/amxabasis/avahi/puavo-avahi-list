@@ -8,8 +8,9 @@
 avahi-browse -artp 2> /dev/null| while read -r line; do
     
     TAG=$(echo $line|cut -d";" -f4)
+    #IPv=$(echo $line|cut -d";" -f3);echo $IPv
     OK=$(echo $line|cut -d";" -f1)
-    if test "$TAG" = "puavo" -a "$OK" = "="; then
+    if test "$TAG" = "puavo-laptop" -a "$OK" = "="; then
 
 	
 	NIC=$(echo $line|cut -d";" -f2)

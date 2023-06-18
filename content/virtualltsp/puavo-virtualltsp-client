@@ -4,12 +4,20 @@
 # only on latops, when puavo.virtualltsp.puavobox is set
 test "$(puavo-conf puavo.virtualltsp.enable)" = "true" || sleep infinity
 test "$(puavo-conf puavo.hosttype)" = "bootserver" && sleep infinity
+
+
 puavobox=$(puavo-conf puavo.virtualltsp.puavobox 2>/dev/null)
 test -z "$puavobox" && sleep infinity
 
 echo "info: virtualltsp starting"
 
-wait=300
+route_on(){
+   if ! ip route | grep -q "10.249.0.0/20";then
+       echo"info: virtualltsp on"
+       ip route add 10.249.0.0/20 via "$puavobox"
+       echo "nameserver 10.249.15.254" > /etc/resolv.conf
+   fi
+}
 
 route_off(){
    if ip route | grep -q "10.249.0.0/20";then
@@ -20,26 +28,18 @@ route_off(){
 }
 
 
-route_on(){
-   if ! ip route | grep -q "10.249.0.0/20";then
-       echo"info: virtualltsp on"
-       ip route add 10.249.0.0/20 via "$puavobox"
-       echo "nameserver $puavobox" > /etc/resolv.conf
-   fi
-}
-
-
+nm-online -s
 while true; do
     if nm-online -q -t 3600; then
 	if fping -a "$puavobox" 2>/dev/null >/dev/null && host cups "$puavobox" 2>/dev/null >/dev/null; then
 	    route_on
-	    sleep "$wait"
-	    while host cups 10.249.15.254 2>/dev/null >/dev/null; do
-	       sleep "$wait"
+	    sleep 10
+	    while host cups 2>/dev/null >/dev/null; do
+	       sleep 10
 	    done
 	else
 	    route_off
-	    sleep "$wait" 	
+	    sleep 60 	
 	fi
     fi
 done

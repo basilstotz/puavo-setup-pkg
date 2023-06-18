@@ -4,7 +4,7 @@ After=syslog.target network.target nss-lookup.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/sbin/puavo-make-client-avahi-service
+ExecStart=/usr/local/sbin/puavo-avahi-anounce
 
 
 [Install]
