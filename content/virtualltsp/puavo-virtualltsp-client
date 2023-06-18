@@ -9,28 +9,38 @@ test -z "$puavobox" && sleep infinity
 
 echo "info: virtualltsp starting"
 
+wait=300
+
+route_off(){
+   if ip route | grep -q "10.249.0.0/20";then
+       echo "info: virtualltsp off"
+       ip route del 10.249.0.0/20 via "$puavobox"
+       echo "nameserver 127.0.0.1" > /etc/resolv.conf
+   fi
+}
+
+
+route_on(){
+   if ! ip route | grep -q "10.249.0.0/20";then
+       echo"info: virtualltsp on"
+       ip route add 10.249.0.0/20 via "$puavobox"
+       echo "nameserver $puavobox" > /etc/resolv.conf
+   fi
+}
+
+
 while true; do
     if nm-online -q -t 3600; then
-	if fping -a $puavobox 2>/dev/null >/dev/null && host cups $puavobox 2>/dev/null >/dev/null; then
-	    if ip route | grep -q "10.249.0.0/20";then
-		while host cups $puavobox 2>/dev/null >/dev/null; do
-		    sleep 300
-		done
-	    else
-		echo"info: virtualltsp on"
-		ip route add 10.249.0.0/20 via $puavobox
-		echo "nameserver $puavobox" > /etc/resolv.conf
-	    fi
+	if fping -a "$puavobox" 2>/dev/null >/dev/null && host cups "$puavobox" 2>/dev/null >/dev/null; then
+	    route_on
+	    sleep "$wait"
+	    while host cups 10.249.15.254 2>/dev/null >/dev/null; do
+	       sleep "$wait"
+	    done
 	else
-	    if ip route | grep -q "10.249.0.0/20";then
-		echo "info: virtualltsp off"
-		ip route del 10.249.0.0/20 via $puavobox
-	    fi
-	    if grep -q "nameserver $puavobox" /etc/resolv.conf; then
-		echo "nameserver 127.0.0.1" > /etc/resolv.conf
-	    fi
+	    route_off
+	    sleep "$wait" 	
 	fi
-	sleep 300	    	
     fi
 done
 
