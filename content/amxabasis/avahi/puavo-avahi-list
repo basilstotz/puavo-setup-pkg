@@ -8,6 +8,8 @@
 #!/bin/sh
 
 red='\033[0;31m'
+yellow='\033[0;33m'
+green='\033[0;32m'
 nc='\033[0m' # No Color 
 
 
@@ -64,10 +66,21 @@ doit(){
     IPSTR=$(printf "%-15s" "$IP")    
 
     if test "$CURRENT" != "$PREFERRED"; then
-	echo -e "$red$NAME\t$HOSTTYPE\t$IPSTR\t$UPSTRING\t$CURRENT\t$UPDATE$nc"
+	case $UPDATE in
+	    $PREFERRED:finished:100)
+		color=$green
+		;;
+	    *:finished:100)
+		color=$yellow
+		;;
+	    *)
+		color=$red
+		;;
+	esac
     else
-	echo -e "$NAME\t$HOSTTYPE\t$IPSTR\t$UPSTRING\t$CURRENT\t$UPDATE"
-    fi	
+	color=$nc
+    fi
+    echo -e "$color$NAME\t$HOSTTYPE\t$IPSTR\t$UPSTRING\t$CURRENT\t$UPDATE$nc"
 }
 
 
