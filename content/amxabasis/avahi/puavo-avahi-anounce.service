@@ -3,7 +3,7 @@ Description=Make Avahi Service
 After=syslog.target network.target nss-lookup.target
 
 [Service]
-Type=oneshot
+Type=simple
 ExecStart=/usr/local/sbin/puavo-avahi-anounce
 
 

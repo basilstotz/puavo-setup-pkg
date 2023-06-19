@@ -1,26 +1,35 @@
 #!/bin/sh
 
 
-IMAGE=$(cat /etc/puavo-image/name)
-#BOOTTIME=$(date +%s)
-BOOTTIME=$(date)
+
 HOSTNAME=$(hostname)
 HOSTTYPE=$(puavo-conf puavo.hosttype)
-case $HOSTTYPE in
-    laptop|bootserver|wirelessaccesspoint)
-	ANS=$(cat /images/image_update.stats|xargs)
-	IMG=$(echo $ANS|cut -d" " -f2)
-	PHASE=$(echo $ANS|cut -d" " -f4)
-	PROGRESS=$(echo $ANS|cut -d" " -f6)
-	UPDATE="$IMG:$PHASE:$PROGRESS"
-	;;
-    *)
-	UPDATE="$IMAGE:finished:100"
-	;;
-esac
+BOOTTIME=$(date +%s)
 
+sleep 300
 
-cat <<EOF > /etc/avahi/services/client.service
+while true; do
+   CURRENT=$(cat /etc/puavo-image/name)
+   PREFERRED=$(puavo-conf puavo.image.preferred).img
+   LASTSEEN=$(date +%s)
+
+   case $HOSTTYPE in
+       fatclient)
+	   UPDATE="$IMAGE:finished:100"
+	   ;;
+       laptop|wirelessaccesspoint)
+	   ANS=$(cat /images/image_update.stats|xargs)
+	   IMG=$(echo "$ANS"|cut -d" " -f2)
+	   PHASE=$(echo "$ANS"|cut -d" " -f4)
+	   PROGRESS=$(echo "$ANS"|cut -d" " -f6)
+	   UPDATE="$IMG:$PHASE:$PROGRESS"
+	   ;;
+       *)
+	   sleep infinity
+	   ;;					      
+   esac
+
+   cat <<EOF > /etc/avahi/services/client.service
 <?xml version="1.0" standalone='no'?>
  <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
  <service-group>
@@ -30,12 +39,23 @@ cat <<EOF > /etc/avahi/services/client.service
      <port>22</port>
      <txt-record>hostname=$HOSTNAME</txt-record>
      <txt-record>hosttype=$HOSTTYPE</txt-record>
-     <txt-record>image=$IMAGE</txt-record>
+     <txt-record>current=$CURRENT</txt-record>
+     <txt-record>preferred=$PREFERRED</txt-record>
      <txt-record>update=$UPDATE</txt-record>
      <txt-record>boottime=$BOOTTIME</txt-record>
+     <txt-record>lastseen=$LASTSEEN</txt-record>
    </service>
  </service-group>
 EOF
 
-systemctl restart avahi-daemon.service
+   avahi-daemon --reload
 
+   if test "$PREFERRED" = "$CURRENT"; then
+       sleep 3600
+   else
+       sleep 600
+   fi
+done
+
+#never reach
+exit 0

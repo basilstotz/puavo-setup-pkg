@@ -1,46 +1,81 @@
-#!/bin/sh
+#!/bin/bash
 
 # =;eth0;IPv4;puavo;SSH-Fernzugriff;local;puavo-builder.local;192.168.1.112;22;"update_status=download 80" "hosttype=laptop"
 # 1 2    3    4     5               6     7                   8             9  10
 
 
 
-avahi-browse -artp 2> /dev/null| while read -r line; do
-    
-    TAG=$(echo $line|cut -d";" -f4)
-    #IPv=$(echo $line|cut -d";" -f3);echo $IPv
-    OK=$(echo $line|cut -d";" -f1)
-    if test "$TAG" = "puavo-laptop" -a "$OK" = "="; then
+#!/bin/sh
 
-	
-	NIC=$(echo $line|cut -d";" -f2)
-	DOMAIN=$(echo $line|cut -d";" -f6)
-	HOST=$(echo $line|cut -d";" -f7)
-	HOST=$(basename $HOST .$DOMAIN)
-	IP=$(echo $line|cut -d";" -f8)
-	TEXT=$(echo $line|cut -d";" -f10)
+red='\033[0;31m'
+nc='\033[0m' # No Color 
 
-	echo
-	echo "     host:\t$HOST"
-	echo "      nic:\t$NIC"
-	echo "   domain:\t$DOMAIN"
-	echo "       ip:\t$IP"
 
-	CNT=1
-	FRAG=$(echo $TEXT|cut -d" " -f$CNT)
-	until test -z "$FRAG"; do
-            FRAG=$(echo $FRAG|sed -e 's/"//g')	    
-	    echo " $(echo $FRAG|cut -d= -f1):\t$(echo $FRAG|cut -d= -f2)" 
-	    CNT=$(( CNT + 1))
-	    FRAG=$(echo $TEXT|cut -d" " -f$CNT)
-	done
+doit(){
+    IP=$1
+    shift
+    while [ $# -gt 0 ]; do
+	ARG=$(echo "$1"|sed -e "s/\"//g")
+	case "$ARG" in
+	    hostname*)
+		HOSTNAME=$(echo "$ARG"|cut -d= -f2)
+	        ;;
+	    hosttype*)
+		TYPE=$(echo "$ARG"|cut -d= -f2)
+		case "$TYPE" in
+		    wirelessaccesspoint)
+			HOSTTYPE="accesspoint"
+			;;
+		    laptop)
+			HOSTTYPE="laptop     "
+			;;
+		    fatclient)
+			HOSTTYPE="fatclient  "  
+			;;
+                    *)
+			HOSTTYPE="unbekannt  "
+			;;
+		esac
+	        ;;
+	    boottime*)
+		BOOTTIME=$(echo "$ARG"|cut -d= -f2)
+	        ;;
+	    lastseen*)
+		LASTSEEN=$(echo "$ARG"|cut -d= -f2)
+	        ;;
+	    current*)
+		CURRENT=$(echo "$ARG"|cut -d= -f2|sed -e "s/.img//g")
+	        ;;
+	    preferred*)
+		PREFERRED=$(echo "$ARG"|cut -d= -f2|sed -e "s/.img//g")
+	        ;;
+	    update*)
+		UPDATE=$(echo "$ARG"|cut -d= -f2|sed -e "s/.img//g")
+	        ;;
+	    *)
+                ;;
+	esac
+	shift
+    done
 
-	echo
-#	echo "$HOST\t$NIC\t$IP\t$TEXT"
+    UPTIME=$(( "$(date +%s)" - "$BOOTTIME" ))
+    UPSTRING=$(printf "%10s" "$UPTIME")
+    NAME=$(printf "%-20s" "$HOSTNAME")
+    IPSTR=$(printf "%-15s" "$IP")    
 
-#	echo "  text: $TEXT"
-#	echo
- 
-    fi
-    
-done 
+    if test "$CURRENT" != "$PREFERRED"; then
+	echo -e "$red$NAME\t$HOSTTYPE\t$IPSTR\t$UPSTRING\t$CURRENT\t$UPDATE$nc"
+    else
+	echo -e "$NAME\t$HOSTTYPE\t$IPSTR\t$UPSTRING\t$CURRENT\t$UPDATE"
+    fi	
+}
+
+
+printf "HOSTNAME         \tHOSTTYPE       \tIP      \t    UPTIME\tCURRENT                                      \tUPDATE\n"
+
+avahi-browse -artp 2>/dev/null|grep "=;.*;IPv4;puavo;"|cut -d";" -f8,10|sed -e"s/;/ /g"| while read -r line; do
+    doit $line
+done
+
+
+exit
