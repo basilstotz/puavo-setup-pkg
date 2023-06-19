@@ -8,8 +8,13 @@
 #!/bin/sh
 
 red='\033[0;31m'
-yellow='\033[0;33m'
+purple='\033[0;35m'
+orange='\033[0;33m'
 green='\033[0;32m'
+grey='\033[0;37m'
+darkgrey='\033[1;30m'
+lightgreen='\033[1;32m'
+lightblue='\033[1;34m'
 nc='\033[0m' # No Color 
 
 
@@ -69,6 +74,9 @@ doit(){
 	case $UPDATE in
 	    $PREFERRED:finished:100)
 		color=$green
+		;;
+	    $CURRENT:finished:100)
+		color=$lightblue
 		;;
 	    *:finished:100)
 		color=$yellow
